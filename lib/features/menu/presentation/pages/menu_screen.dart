@@ -123,7 +123,7 @@ class MenuScreen extends StatelessWidget {
             const SizedBox(height: 14),
             _buildServiceGrid(),
             const SizedBox(height: 16),
-            _buildBottomBanner(),
+            _buildBottomBanner(context),
             const SizedBox(height: 16),
           ],
         ),
@@ -417,7 +417,7 @@ class MenuScreen extends StatelessWidget {
   }
 
   // --- Bottom Poster Banner -----------------------------------------------
-  Widget _buildBottomBanner() {
+  Widget _buildBottomBanner(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -458,7 +458,9 @@ class MenuScreen extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/poster_detail');
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryPurple,
                 foregroundColor: Colors.white,
