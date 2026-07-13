@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+import 'package:flexify/core/theme/app_colors.dart';
+import 'package:flexify/core/data/mock_data.dart';
+import 'package:flexify/core/widgets/common/custom_app_bar.dart';
+import 'package:flexify/core/widgets/common/page_indicator_dots.dart';
+import 'package:flexify/core/widgets/common/section_header.dart';
+import 'package:flexify/features/menu/presentation/pages/bottom_nav.dart';
+import '../widgets/poster_card.dart';
+import '../widgets/action_buttons_row.dart';
+import '../widgets/related_templates_list.dart';
+
+/// FlexWala poster preview screen - clean architecture version.
+class PosterDetailScreen extends StatelessWidget {
+  const PosterDetailScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: CustomAppBar(
+        onBackTap: () => Navigator.maybePop(context),
+        onLikeTap: () {},
+      ),
+      body: SafeArea(
+        top: false,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AspectRatio(
+                aspectRatio: 0.72,
+                child: PosterCard(imageUrl: MockData.mainPosterImage),
+              ),
+              const SizedBox(height: 16),
+              ActionButtonsRow(
+                onLikeTap: () {},
+                onDownloadTap: () {},
+              ),
+              const SizedBox(height: 16),
+              PageIndicatorDots(
+                totalPages: MockData.totalPages,
+                activeIndex: MockData.activePageIndex,
+              ),
+              const SizedBox(height: 24),
+              const SectionHeader(title: 'Related Templates'),
+              const SizedBox(height: 12),
+              RelatedTemplatesList(templates: MockData.relatedTemplates),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: const AppBottomNav(currentIndex: 2),
+    );
+  }
+}
