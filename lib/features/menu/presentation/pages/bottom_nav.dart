@@ -1,124 +1,142 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_text_styles.dart';
 
-/// Bottom navigation bar shared by Home and Category screens.
-/// [currentIndex]: 0 = Category, 1 = Home, 2 = Profile
+
+class NavItemData {
+  final IconData icon;
+  final String label;
+  const NavItemData({required this.icon, required this.label});
+}
+
+/// Shared bottom navigation bar with a raised, centered "AI Create" /
+/// primary action button. Used by both Home and Business Category pages
+/// (active index differs per screen).
 class AppBottomNav extends StatelessWidget {
+  final List<NavItemData>? items;
   final int currentIndex;
-  final ValueChanged<int>? onTap;
+  final String centerLabel;
+  final IconData centerIcon;
+  final ValueChanged<int>? onItemTap;
+  final VoidCallback? onCenterTap;
 
   const AppBottomNav({
     super.key,
+    this.items,
     required this.currentIndex,
-    this.onTap,
+    this.centerLabel = 'AI Create',
+    this.centerIcon = Icons.add,
+    this.onItemTap,
+    this.onCenterTap,
   });
+
+  static const List<NavItemData> defaultItems = [
+    NavItemData(icon: Icons.home_rounded, label: 'Home'),
+    NavItemData(icon: Icons.grid_view_rounded, label: 'Category'),
+    NavItemData(icon: Icons.notifications_none_rounded, label: 'Orders'),
+    NavItemData(icon: Icons.person_outline_rounded, label: 'Profile'),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 12,
-            offset: const Offset(0, -2),
+    final navItems = items ?? defaultItems;
+    return SizedBox(
+      height: 82,
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.topCenter,
+        children: [
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 14,
+            bottom: 0,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x14000000),
+                    blurRadius: 12,
+                    offset: Offset(0, -2),
+                  ),
+                ],
+              ),
+              child: Builder(
+                builder: (context) {
+                  final int half = navItems.length ~/ 2;
+                  final left = navItems.sublist(0, half);
+                  final right = navItems.sublist(half);
+                  return Row(
+                    children: [
+                      for (int i = 0; i < left.length; i++) _navSlot(left[i], i),
+                      const SizedBox(width: 64),
+                      for (int i = 0; i < right.length; i++)
+                        _navSlot(right[i], half + i),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            child: GestureDetector(
+              onTap: onCenterTap,
+              child: Column(
+                children: [
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: const BoxDecoration(
+                      gradient: AppColors.brandGradient,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0x334A2FBF),
+                          blurRadius: 14,
+                          offset: Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(centerIcon, color: Colors.white, size: 26),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    centerLabel,
+                    style: AppTextStyles.navLabelActive.copyWith(
+                      color: AppColors.primaryOrange,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
-      child: SafeArea(
-        top: false,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _NavItem(
-              icon: Icons.home_rounded,
-              label: 'Home',
-              isActive: currentIndex == 0,
-              onTap: () {
-                if (currentIndex != 0) Navigator.pushReplacementNamed(context, '/menu');
-              },
-            ),
-            _NavItem(
-              icon: Icons.grid_view_rounded,
-              label: 'Categories',
-              isActive: currentIndex == 1,
-              onTap: () {
-                if (currentIndex != 1) Navigator.pushReplacementNamed(context, '/category');
-              },
-            ),
-            _NavItem(
-              icon: Icons.person_outline_rounded,
-              label: 'Profile',
-              isActive: currentIndex == 2,
-              onTap: () {
-                if (currentIndex != 2) Navigator.pushReplacementNamed(context, '/poster_detail');
-              },
-            ),
-          ],
-        ),
-      ),
     );
   }
-}
 
-class _NavItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final bool isActive;
-  final VoidCallback onTap;
-  final bool isCenterHome;
-
-  const _NavItem({
-    required this.icon,
-    required this.label,
-    required this.isActive,
-    required this.onTap,
-    this.isCenterHome = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final color = isActive ? AppColors.navActive : AppColors.navInactive;
-
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+  Widget _navSlot(NavItemData item, int index) {
+    if (item.label.isEmpty) return const Expanded(child: SizedBox());
+    final bool active = index == currentIndex;
+    return Expanded(
+      child: InkWell(
+        onTap: () => onItemTap?.call(index),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (isCenterHome)
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: isActive
-                      ? const LinearGradient(
-                    colors: [Color(0xFFF97316), Color(0xFFDB2777)],
-                  )
-                      : null,
-                  color: isActive ? null : Colors.transparent,
-                ),
-                child: Icon(
-                  icon,
-                  color: isActive ? Colors.white : color,
-                  size: 22,
-                ),
-              )
-            else
-              Icon(icon, color: color, size: 22),
+            Icon(
+              item.icon,
+              size: 22,
+              color: active ? AppColors.navActive : AppColors.navInactive,
+            ),
             const SizedBox(height: 4),
             Text(
-              label,
-              style: TextStyle(
-                fontSize: 11,
-                color: color,
-                fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-              ),
+              item.label,
+              style: active ? AppTextStyles.navLabelActive : AppTextStyles.navLabel,
             ),
           ],
         ),

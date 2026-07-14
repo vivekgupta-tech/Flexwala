@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flexify/core/di/injection_container.dart';
 import 'package:flexify/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flexify/features/auth/presentation/pages/login_page.dart';
-import 'package:flexify/features/home/presentation/pages/home_page.dart';
+import 'package:flexify/features/home/presentation/home_page.dart';
 import 'package:flexify/features/posters/presentation/pages/poster_detail_screen.dart';
 import 'package:flexify/features/menu/presentation/pages/category_screen.dart';
 import 'package:flexify/features/menu/presentation/pages/menu_screen.dart';

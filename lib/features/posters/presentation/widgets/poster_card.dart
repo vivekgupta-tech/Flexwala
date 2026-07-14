@@ -93,7 +93,7 @@ class PosterCard extends StatelessWidget {
                       const SizedBox(height: 10),
                       const JoinNowButton(),
                       const SizedBox(height: 8),
-                      const Text(MockData.websiteUrl, style: AppTextStyles.website),
+                      Text(MockData.websiteUrl, style: AppTextStyles.website),
                     ],
                   ),
                 ),
