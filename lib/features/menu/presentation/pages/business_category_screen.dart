@@ -70,7 +70,17 @@ class BusinessCategoryScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const AppBottomNav(currentIndex: 1),
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: 1,
+        onCenterTap: () => Navigator.pushReplacementNamed(context, '/home'),
+        onItemTap: (index) {
+          if (index == 0) {
+            Navigator.pushReplacementNamed(context, '/home');
+          } else if (index == 1) {
+            Navigator.pushNamed(context, '/category');
+          }
+        },
+      ),
     );
   }
 

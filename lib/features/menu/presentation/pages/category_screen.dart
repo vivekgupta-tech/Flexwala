@@ -18,6 +18,13 @@ class CategoryScreen extends StatelessWidget {
       bgColor: Color(0xFFFFEDD5),
     ),
     CategoryCardData(
+      title: 'Online Services',
+      subtitle: 'Digital services\nmade easy',
+      icon: Icons.language_rounded,
+      accentColor: AppColors.primaryPurple,
+      bgColor: Color(0xFFEDE9FE),
+    ),
+    CategoryCardData(
       title: 'Political',
       subtitle: 'Connect with\nyour supporters',
       icon: Icons.account_balance_rounded,
@@ -59,7 +66,14 @@ class CategoryScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.pageBg,
       drawer: const AppDrawer(),
-      bottomNavigationBar: const AppBottomNav(currentIndex: 1),
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: 1,
+        onItemTap: (index) {
+          if (index == 0) {
+            Navigator.pushReplacementNamed(context, '/home');
+          }
+        },
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -86,6 +100,8 @@ class CategoryScreen extends StatelessWidget {
                   onTap: () {
                     if (category.title == 'Business') {
                       Navigator.pushNamed(context, '/business_category');
+                    } else if (category.title == 'Online Services') {
+                      Navigator.pushNamed(context, '/online_services');
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

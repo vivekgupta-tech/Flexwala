@@ -81,7 +81,7 @@ class BusinessCategoryPage extends StatelessWidget {
         onCenterTap: () => Navigator.pushReplacementNamed(context, '/home'),
         onItemTap: (index) {
           if (index == 0) {
-             Navigator.pushNamed(context, '/category');
+            Navigator.pushReplacementNamed(context, '/category');
           }
         },
       ),

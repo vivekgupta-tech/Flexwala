@@ -36,8 +36,13 @@ class AppBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navItems = items ?? defaultItems;
-    return SizedBox(
-      height: 82,
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+    // Increased offset to 20px to lift it higher
+    final totalBottomHeight = 82.0 + bottomPadding + 20.0; 
+    
+    return Container(
+      height: totalBottomHeight,
+      color: Colors.white,
       child: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.topCenter,
@@ -46,7 +51,7 @@ class AppBottomNav extends StatelessWidget {
             left: 0,
             right: 0,
             top: 14,
-            bottom: 0,
+            bottom: bottomPadding + 20.0, // Lifted the white bar content
             child: Container(
               decoration: const BoxDecoration(
                 color: Colors.white,

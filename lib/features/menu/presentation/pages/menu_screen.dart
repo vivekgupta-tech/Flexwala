@@ -108,9 +108,11 @@ class MenuScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       drawer: const AppDrawer(),
       bottomNavigationBar: AppBottomNav(
-        currentIndex: 0,
+        currentIndex: 1,
         onItemTap: (index) {
-           if (index == 1) {
+           if (index == 0) {
+             Navigator.pushReplacementNamed(context, '/home');
+           } else if (index == 1) {
              Navigator.pushNamed(context, '/category');
            }
         },

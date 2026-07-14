@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/widgets/placeholder_box.dart';
 
 /// Top header: hamburger menu · Flexwala logo + tagline · notification bell.
 class HomeHeader extends StatelessWidget {
@@ -32,47 +29,10 @@ class HomeHeader extends StatelessWidget {
         ),
         Expanded(
           child: Center(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const PlaceholderBox(
-                      width: 46,
-                      height: 46,
-                      borderRadius: 46,
-                      icon: Icons.person,
-                      backgroundColor: Color(0xFFEDE3FF),
-                      iconColor: AppColors.primaryPurple,
-                    ),
-                    const SizedBox(width: 8),
-                    RichText(
-                      text: TextSpan(
-                        style: AppTextStyles.logoText,
-                        children: [
-                          const TextSpan(
-                            text: 'Flex',
-                            style: TextStyle(color: AppColors.primaryOrange),
-                          ),
-                          TextSpan(
-                            text: 'wala',
-                            style: TextStyle(
-                              color: AppColors.primaryPurple,
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  '— Digital Growth for Your Business —',
-                  style: AppTextStyles.logoTagline,
-                ),
-              ],
+            child: Image.asset(
+              'assets/images/topappbarpng.png',
+              height: 54,
+              fit: BoxFit.contain,
             ),
           ),
         ),

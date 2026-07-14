@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> {
           brightness: Brightness.dark,
         ),
         themeMode: ThemeMode.system,
-        initialRoute: AppRoutes.menu,
+        initialRoute: AppRoutes.home,
         onGenerateRoute: AppRoutes.generateRoute,
       ),
     );
