@@ -4,7 +4,7 @@ import 'package:flexify/core/data/mock_data.dart';
 import 'package:flexify/core/widgets/common/custom_app_bar.dart';
 import 'package:flexify/core/widgets/common/page_indicator_dots.dart';
 import 'package:flexify/core/widgets/common/section_header.dart';
-import 'package:flexify/features/menu/presentation/pages/bottom_nav.dart';
+import 'package:flexify/core/widgets/navigation/app_bottom_nav.dart';
 import '../widgets/poster_card.dart';
 import '../widgets/action_buttons_row.dart';
 import '../widgets/related_templates_list.dart';
@@ -50,7 +50,14 @@ class PosterDetailScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const AppBottomNav(currentIndex: 2),
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: 2,
+        onItemTap: (index) {
+          if (index == 0) Navigator.pushReplacementNamed(context, '/home');
+          if (index == 1) Navigator.pushReplacementNamed(context, '/category');
+        },
+        onCenterTap: () => Navigator.pushReplacementNamed(context, '/home'),
+      ),
     );
   }
 }

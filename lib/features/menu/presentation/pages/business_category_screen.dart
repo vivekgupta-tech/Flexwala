@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flexify/core/theme/app_colors.dart';
-import 'package:flexify/features/menu/presentation/pages/bottom_nav.dart';
+import 'package:flexify/core/widgets/navigation/app_bottom_nav.dart';
 import 'package:flexify/features/menu/presentation/widgets/app_drawer.dart';
 import 'package:flexify/features/menu/presentation/pages/Service_grid_item.dart';
 
@@ -246,9 +246,9 @@ class BusinessCategoryScreen extends StatelessWidget {
       itemCount: _services.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 5,
-        mainAxisSpacing: 10,
+        mainAxisSpacing: 8,
         crossAxisSpacing: 8,
-        childAspectRatio: 0.65,
+        childAspectRatio: 0.75,
       ),
       itemBuilder: (context, index) {
         return ServiceGridItem(

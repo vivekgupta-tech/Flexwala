@@ -48,7 +48,7 @@ class DateStrip extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         SizedBox(
-          height: 78,
+          height: 92,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: dates.length,
@@ -57,7 +57,8 @@ class DateStrip extends StatelessWidget {
               final d = dates[index];
               return Container(
                 width: 58,
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                height: 88,
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(AppRadius.md),

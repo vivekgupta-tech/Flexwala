@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/navigation/app_bottom_nav.dart';
 import '../../home/presentation/widgets/premium_banner.dart';
@@ -7,57 +8,76 @@ import 'widgets/category_header.dart';
 import 'widgets/category_search_bar.dart';
 import 'widgets/category_breadcrumb.dart';
 import 'widgets/category_title_block.dart';
-import 'widgets/category_grid_tile.dart';
+import '../domain/category_item.dart';
 
-/// Business Category screen — matches Image 2 pixel-for-pixel:
-/// header, search + filter, breadcrumb, title block, 5x4 category grid,
-/// premium upsell, bottom nav (कॅटेगरी active).
+/// Business Category screen — closely matches the reference design:
+/// header, search+filter, breadcrumb, title block, 5×4 grid, premium upsell, bottom nav.
 class BusinessCategoryPage extends StatelessWidget {
   const BusinessCategoryPage({super.key});
+
+  void _showComingSoon(BuildContext context, String item) {
+    HapticFeedback.lightImpact();
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$item — Coming Soon!'),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 2),
+        backgroundColor: AppColors.primaryPurple,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.pageBg,
+      backgroundColor: const Color(0xFFF8F8FC),
       body: SafeArea(
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 16, 0),
               child: CategoryHeader(notificationCount: 3),
             ),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                physics: const BouncingScrollPhysics(),
                 children: [
                   const CategorySearchBar(),
-                  const SizedBox(height: 14),
+                  const SizedBox(height: 12),
                   const CategoryBreadcrumb(
-                    trail: ['सर्व कॅटेगरी', 'Business'],
+                    trail: ['होम', 'सर्व कॅटेगरी', 'Business'],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 14),
                   const CategoryTitleBlock(
                     title: 'Business',
                     subtitle: 'आपल्या व्यवसासाठी योग्य कॅटेगरी निवडा',
                     icon: Icons.storefront_outlined,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 14),
+                  // 5-column grid — matches reference
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: BusinessCategoryMockData.categories.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 5,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                      childAspectRatio: 0.68,
+                      mainAxisSpacing: 6,
+                      crossAxisSpacing: 6,
+                      childAspectRatio: 0.72,
                     ),
                     itemBuilder: (context, index) {
                       final item = BusinessCategoryMockData.categories[index];
-                      return CategoryGridTile(item: item);
+                      return _BusinessGridTile(
+                        item: item,
+                        onTap: () => _showComingSoon(context, item.name),
+                      );
                     },
                   ),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 16),
                   const PremiumBanner(
                     title: 'सर्व प्रीमियम डिझाईन्स अनलॉक करा',
                     body: 'अमर्याद पोस्टर डाउनलोड आणि विशेष सुविधा मिळवा.',
@@ -71,19 +91,99 @@ class BusinessCategoryPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: AppBottomNav(
-        items: const [
-          NavItemData(icon: Icons.grid_view_rounded, label: 'कॅटेगरी'),
-          NavItemData(icon: Icons.person_outline_rounded, label: 'प्रोफाइल'),
-        ],
-        centerLabel: 'होम',
-        centerIcon: Icons.home_rounded,
-        currentIndex: 0,
-        onCenterTap: () => Navigator.pushReplacementNamed(context, '/home'),
+        currentIndex: 1,
         onItemTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/category');
-          }
+          if (index == 0) Navigator.pushReplacementNamed(context, '/home');
+          if (index == 1) Navigator.pushReplacementNamed(context, '/category');
         },
+        onCenterTap: () => Navigator.pushReplacementNamed(context, '/home'),
+      ),
+    );
+  }
+}
+
+/// Individual grid tile for the Business category grid.
+class _BusinessGridTile extends StatelessWidget {
+  final CategoryItem item;
+  final VoidCallback? onTap;
+
+  const _BusinessGridTile({required this.item, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10),
+        splashColor: AppColors.primaryPurple.withValues(alpha: 0.1),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: const Color(0xFFEEEEEE)),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Icon area with soft background circle
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    width: 42,
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: item.iconBackground,
+                      shape: BoxShape.circle,
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(
+                      item.emojiIcon,
+                      size: 20,
+                      color: AppColors.textDark,
+                    ),
+                  ),
+                  // Heart icon top-right
+                  Positioned(
+                    right: -4,
+                    top: -4,
+                    child: Icon(
+                      item.isFavorite ? Icons.favorite : Icons.favorite_border,
+                      size: 13,
+                      color: item.isFavorite
+                          ? Colors.red
+                          : const Color(0xFFBBBBBB),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 5),
+              Text(
+                item.name,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 9.5,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF1A1A2E),
+                  height: 1.2,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                '${item.postCount}+ पोस्टर',
+                style: const TextStyle(
+                  fontSize: 8,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.primaryOrange,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
