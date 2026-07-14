@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
-import 'package:flexify/features/menu/presentation/pages/bottom_nav.dart';
+import 'package:flexify/core/widgets/navigation/app_bottom_nav.dart';
 import '../data/home_mock_data.dart';
 import 'widgets/home_header.dart';
 import 'widgets/greeting_row.dart';
@@ -42,17 +42,16 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            AppBottomNav(
-              items: const [
-                NavItemData(icon: Icons.home_rounded, label: 'Home'),
-                NavItemData(icon: Icons.grid_view_rounded, label: 'Templates'),
-                NavItemData(icon: Icons.circle, label: ''),
-                NavItemData(icon: Icons.person_outline_rounded, label: 'Profile'),
-              ],
-              currentIndex: 0,
-            ),
           ],
         ),
+      ),
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: 0,
+        onItemTap: (index) {
+          if (index == 1) {
+            Navigator.pushNamed(context, '/category');
+          }
+        },
       ),
     );
   }

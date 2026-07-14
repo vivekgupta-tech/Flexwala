@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flexify/core/theme/app_colors.dart';
-import 'package:flexify/features/menu/presentation/pages/bottom_nav.dart';
+import 'package:flexify/core/widgets/navigation/app_bottom_nav.dart';
 import 'package:flexify/core/widgets/common_widgets.dart';
 
 import 'package:flexify/features/menu/presentation/widgets/app_drawer.dart';
@@ -107,7 +107,15 @@ class MenuScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: const AppDrawer(),
-      bottomNavigationBar: const AppBottomNav(currentIndex: 0),
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: 0,
+        onItemTap: (index) {
+           if (index == 1) {
+             Navigator.pushNamed(context, '/category');
+           }
+        },
+        onCenterTap: () => Navigator.pushReplacementNamed(context, '/home'),
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16),

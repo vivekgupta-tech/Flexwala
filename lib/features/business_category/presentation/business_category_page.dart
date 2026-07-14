@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/widgets/navigation/app_bottom_nav.dart';
 import '../../home/presentation/widgets/premium_banner.dart';
-import '../../menu/presentation/pages/bottom_nav.dart';
 import '../data/business_category_mock_data.dart';
 import 'widgets/category_header.dart';
 import 'widgets/category_search_bar.dart';
@@ -67,17 +67,23 @@ class BusinessCategoryPage extends StatelessWidget {
                 ],
               ),
             ),
-            AppBottomNav(
-              items: [
-                NavItemData(icon: Icons.grid_view_rounded, label: 'कॅटेगरी'),
-                NavItemData(icon: Icons.person_outline_rounded, label: 'प्रोफाइल'),
-              ],
-              centerLabel: 'होम',
-              centerIcon: Icons.home_rounded,
-              currentIndex: 0,
-            ),
           ],
         ),
+      ),
+      bottomNavigationBar: AppBottomNav(
+        items: const [
+          NavItemData(icon: Icons.grid_view_rounded, label: 'कॅटेगरी'),
+          NavItemData(icon: Icons.person_outline_rounded, label: 'प्रोफाइल'),
+        ],
+        centerLabel: 'होम',
+        centerIcon: Icons.home_rounded,
+        currentIndex: 0,
+        onCenterTap: () => Navigator.pushReplacementNamed(context, '/home'),
+        onItemTap: (index) {
+          if (index == 0) {
+             Navigator.pushNamed(context, '/category');
+          }
+        },
       ),
     );
   }
