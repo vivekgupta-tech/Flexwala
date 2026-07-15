@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Welcome to', style: AppTextStyles.bannerEyebrow),
-              Text('Flaxwala', style: AppTextStyles.pageTitle),
+              Text('flexwala', style: AppTextStyles.pageTitle),
             ],
           ),
           IconButton(
