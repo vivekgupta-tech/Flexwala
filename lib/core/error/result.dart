@@ -24,3 +24,4 @@ class ResultError<T> extends Result<T> {
   final Failure failure;
   const ResultError(this.failure);
 }
+

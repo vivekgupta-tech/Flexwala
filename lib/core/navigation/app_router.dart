@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flexify/features/home/presentation/home_page_old.dart';
-import 'package:flexify/features/posters/presentation/pages/poster_detail_screen.dart';
-import 'package:flexify/features/menu/presentation/pages/category_screen.dart';
-import 'package:flexify/features/menu/presentation/pages/menu_screen.dart';
-import 'package:flexify/features/menu/presentation/pages/business_category_screen.dart';
-import 'package:flexify/features/business_category/presentation/business_category_page.dart';
+import 'package:flexwala/features/home/presentation/home_page_old.dart';
+import 'package:flexwala/features/posters/presentation/pages/poster_detail_screen.dart';
+import 'package:flexwala/features/menu/presentation/pages/category_screen.dart';
+import 'package:flexwala/features/menu/presentation/pages/menu_screen.dart';
+import 'package:flexwala/features/menu/presentation/pages/business_category_screen.dart';
+import 'package:flexwala/features/business_category/presentation/business_category_page.dart';
 
 class AppRoutes {
   static const String home = '/home';
@@ -37,4 +37,5 @@ class AppRoutes {
     }
   }
 }
+
 

@@ -14,3 +14,4 @@ class FeatureItemModel {
     required this.hexColor,
   });
 }
+

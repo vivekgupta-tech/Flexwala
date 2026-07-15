@@ -8,3 +8,4 @@ class AppSpacing {
   static const xl = 20.0;
   static const xxl = 24.0;
 }
+

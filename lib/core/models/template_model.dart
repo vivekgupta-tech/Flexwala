@@ -13,3 +13,4 @@ class TemplateModel {
     required this.buttonColor,
   });
 }
+

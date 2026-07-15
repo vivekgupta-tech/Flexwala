@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.Flex" "\0"
-            VALUE "FileDescription", "flexify" "\0"
+            VALUE "FileDescription", "Flaxwala" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "flexify" "\0"
+            VALUE "InternalName", "Flaxwala" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.Flex. All rights reserved." "\0"
-            VALUE "OriginalFilename", "flexify.exe" "\0"
-            VALUE "ProductName", "flexify" "\0"
+            VALUE "OriginalFilename", "Flaxwala.exe" "\0"
+            VALUE "ProductName", "Flaxwala" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
@@ -119,3 +119,4 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flexify/core/models/template_model.dart';
+import 'package:flexwala/core/models/template_model.dart';
 import 'related_template_card.dart';
 
 /// Reusable horizontal scrollable list of related template cards.
@@ -23,3 +23,4 @@ class RelatedTemplatesList extends StatelessWidget {
     );
   }
 }
+

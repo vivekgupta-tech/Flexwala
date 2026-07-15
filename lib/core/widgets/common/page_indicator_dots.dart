@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flexify/core/theme/app_colors.dart';
+import 'package:flexwala/core/theme/app_colors.dart';
 
 /// Reusable dot page indicator - active dot has orange->blue gradient.
 class PageIndicatorDots extends StatelessWidget {
@@ -37,3 +37,4 @@ class PageIndicatorDots extends StatelessWidget {
     );
   }
 }
+

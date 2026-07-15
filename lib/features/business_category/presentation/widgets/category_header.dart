@@ -179,3 +179,4 @@ class CategoryHeader extends StatelessWidget {
     );
   }
 }
+

@@ -8,3 +8,4 @@ class AppEventBus {
   Stream<String> get stream => _controller.stream;
   void fireSessionExpired() => _controller.add('session_expired');
 }
+

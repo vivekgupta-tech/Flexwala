@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
-import 'package:flexify/core/widgets/navigation/app_bottom_nav.dart';
+import 'package:flexwala/core/widgets/navigation/app_bottom_nav.dart';
 import '../data/home_mock_data.dart';
 import 'widgets/home_header.dart';
 import 'widgets/greeting_row.dart';
@@ -80,4 +80,5 @@ class HomePageOld extends StatelessWidget {
     );
   }
 }
+
 

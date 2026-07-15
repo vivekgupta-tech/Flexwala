@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flexify/core/models/template_model.dart';
+import 'package:flexwala/core/models/template_model.dart';
 
 /// Reusable dark poster thumbnail card used in "Related Templates" row.
 class RelatedTemplateCard extends StatelessWidget {
@@ -87,3 +87,4 @@ class RelatedTemplateCard extends StatelessWidget {
     );
   }
 }
+

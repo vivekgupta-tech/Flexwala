@@ -5,10 +5,11 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = flexify
+PRODUCT_NAME = Flaxwala
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.Flex.flexify
+PRODUCT_BUNDLE_IDENTIFIER = com.Flex.Flaxwala
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2026 com.Flex. All rights reserved.
+

@@ -47,3 +47,4 @@ class AppSuccessView extends StatelessWidget {
     );
   }
 }
+

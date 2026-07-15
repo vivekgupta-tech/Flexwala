@@ -47,3 +47,4 @@ class HexagonIcon extends StatelessWidget {
     );
   }
 }
+

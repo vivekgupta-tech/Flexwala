@@ -15,3 +15,4 @@ class UserModel {
 
   UserEntity toEntity() => UserEntity(id: id, name: name, email: email);
 }
+

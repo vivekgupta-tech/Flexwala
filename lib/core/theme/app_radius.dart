@@ -7,3 +7,4 @@ class AppRadius {
   static const xl = 20.0;
   static const pill = 999.0;
 }
+

@@ -57,3 +57,4 @@ class NotificationBadgeIcon extends StatelessWidget {
     );
   }
 }
+

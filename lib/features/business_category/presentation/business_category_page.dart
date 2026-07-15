@@ -188,3 +188,4 @@ class _BusinessGridTile extends StatelessWidget {
     );
   }
 }
+

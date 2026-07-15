@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flexify/core/theme/app_colors.dart';
-import 'package:flexify/core/widgets/navigation/app_bottom_nav.dart';
-import 'package:flexify/core/widgets/common_widgets.dart';
+import 'package:flexwala/core/theme/app_colors.dart';
+import 'package:flexwala/core/widgets/navigation/app_bottom_nav.dart';
+import 'package:flexwala/core/widgets/common_widgets.dart';
 
-import 'package:flexify/features/menu/presentation/widgets/app_drawer.dart';
+import 'package:flexwala/features/menu/presentation/widgets/app_drawer.dart';
 
 class ServiceItem {
   final String title;
@@ -578,3 +578,4 @@ class _BannerStat extends StatelessWidget {
     );
   }
 }
+

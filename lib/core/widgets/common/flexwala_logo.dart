@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flexify/core/theme/app_colors.dart';
+import 'package:flexwala/core/theme/app_colors.dart';
 
 /// Reusable brand logo - "FLEX" (orange) + "WALA" (blue).
 /// fontSize/iconSize alag-alag jagah (appbar vs poster) ke liye configurable.
@@ -47,3 +47,4 @@ class FlexwalaLogo extends StatelessWidget {
     );
   }
 }
+

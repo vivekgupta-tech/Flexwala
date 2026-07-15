@@ -77,3 +77,4 @@ class CategorySearchBar extends StatelessWidget {
     );
   }
 }
+

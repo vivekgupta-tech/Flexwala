@@ -24,3 +24,4 @@ class UnauthorizedFailure extends Failure {
 class ValidationFailure extends Failure {
   const ValidationFailure({required super.message});
 }
+

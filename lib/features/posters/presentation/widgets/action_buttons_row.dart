@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flexify/core/theme/app_colors.dart';
+import 'package:flexwala/core/theme/app_colors.dart';
 
 /// Reusable "Like" (outlined) + "Download" (gradient) button row.
 class ActionButtonsRow extends StatelessWidget {
@@ -72,3 +72,4 @@ class ActionButtonsRow extends StatelessWidget {
     );
   }
 }
+

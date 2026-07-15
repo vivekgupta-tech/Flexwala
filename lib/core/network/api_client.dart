@@ -45,3 +45,4 @@ class ApiClient {
     return ServerException(message: message, statusCode: statusCode);
   }
 }
+

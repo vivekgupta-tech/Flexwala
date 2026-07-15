@@ -145,3 +145,4 @@ class TemplatesSection extends StatelessWidget {
     );
   }
 }
+

@@ -1,6 +1,6 @@
 {
-    "name": "flexify",
-    "short_name": "flexify",
+    "name": "Flaxwala",
+    "short_name": "Flaxwala",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
@@ -33,3 +33,4 @@
         }
     ]
 }
+

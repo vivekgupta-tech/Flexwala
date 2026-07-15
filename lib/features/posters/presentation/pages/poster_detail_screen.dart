@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flexify/core/theme/app_colors.dart';
-import 'package:flexify/core/data/mock_data.dart';
-import 'package:flexify/core/widgets/common/custom_app_bar.dart';
-import 'package:flexify/core/widgets/common/page_indicator_dots.dart';
-import 'package:flexify/core/widgets/common/section_header.dart';
-import 'package:flexify/core/widgets/navigation/app_bottom_nav.dart';
+import 'package:flexwala/core/theme/app_colors.dart';
+import 'package:flexwala/core/data/mock_data.dart';
+import 'package:flexwala/core/widgets/common/custom_app_bar.dart';
+import 'package:flexwala/core/widgets/common/page_indicator_dots.dart';
+import 'package:flexwala/core/widgets/common/section_header.dart';
+import 'package:flexwala/core/widgets/navigation/app_bottom_nav.dart';
 import '../widgets/poster_card.dart';
 import '../widgets/action_buttons_row.dart';
 import '../widgets/related_templates_list.dart';
@@ -61,3 +61,4 @@ class PosterDetailScreen extends StatelessWidget {
     );
   }
 }
+

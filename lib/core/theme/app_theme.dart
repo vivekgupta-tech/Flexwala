@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flexify/core/theme/app_colors.dart';
+import 'package:flexwala/core/theme/app_colors.dart';
 
 /// Wires colors + text styles into a single ThemeData.
 class AppTheme {
@@ -35,3 +35,4 @@ class AppTheme {
   // Purana 'light' getter agar kahin use ho raha ho toh usse redirect kar dete hain
   static ThemeData get light => lightTheme;
 }
+

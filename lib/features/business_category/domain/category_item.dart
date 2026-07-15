@@ -18,3 +18,4 @@ class CategoryItem {
     this.isFavorite = false,
   });
 }
+

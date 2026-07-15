@@ -36,3 +36,4 @@ class CategoryBreadcrumb extends StatelessWidget {
     );
   }
 }
+

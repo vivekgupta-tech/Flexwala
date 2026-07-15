@@ -205,3 +205,4 @@ class AppTextStyles {
     color: AppColors.primaryPurple,
   );
 }
+

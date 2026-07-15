@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
-import 'package:flexify/core/widgets/navigation/app_bottom_nav.dart';
+import 'package:flexwala/core/widgets/navigation/app_bottom_nav.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Welcome to', style: AppTextStyles.bannerEyebrow),
-              Text('Flexify', style: AppTextStyles.pageTitle),
+              Text('Flaxwala', style: AppTextStyles.pageTitle),
             ],
           ),
           IconButton(
@@ -157,3 +157,4 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+

@@ -20,3 +20,4 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     return UserModel.fromJson(response.data['user']);
   }
 }
+

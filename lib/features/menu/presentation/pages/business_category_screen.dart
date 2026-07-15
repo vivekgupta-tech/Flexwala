@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flexify/core/theme/app_colors.dart';
-import 'package:flexify/core/widgets/navigation/app_bottom_nav.dart';
-import 'package:flexify/features/menu/presentation/widgets/app_drawer.dart';
-import 'package:flexify/features/menu/presentation/pages/Service_grid_item.dart';
+import 'package:flexwala/core/theme/app_colors.dart';
+import 'package:flexwala/core/widgets/navigation/app_bottom_nav.dart';
+import 'package:flexwala/features/menu/presentation/widgets/app_drawer.dart';
+import 'package:flexwala/features/menu/presentation/pages/Service_grid_item.dart';
 
 class BusinessCategoryScreen extends StatelessWidget {
   const BusinessCategoryScreen({super.key});
@@ -346,3 +346,4 @@ class _StatItem extends StatelessWidget {
     );
   }
 }
+

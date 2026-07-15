@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flexify/core/theme/app_colors.dart';
+import 'package:flexwala/core/theme/app_colors.dart';
 import 'flexwala_logo.dart';
 
 /// Reusable top app bar: back button + centered brand logo + like icon.
@@ -52,3 +52,4 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(52);
 }
+

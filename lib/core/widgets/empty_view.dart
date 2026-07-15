@@ -47,3 +47,4 @@ class AppEmptyView extends StatelessWidget {
     );
   }
 }
+

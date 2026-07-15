@@ -8,3 +8,4 @@ class TemplateTextLine {
 
   const TemplateTextLine({required this.text, required this.color});
 }
+

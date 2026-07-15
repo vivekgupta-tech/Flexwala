@@ -20,3 +20,4 @@ class TemplateItem {
     this.isFavorite = false,
   });
 }
+

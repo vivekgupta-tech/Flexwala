@@ -2,9 +2,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flexify/core/di/injection_container.dart';
-import 'package:flexify/core/navigation/app_router.dart';
-import 'package:flexify/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flexwala/core/di/injection_container.dart';
+import 'package:flexwala/core/navigation/app_router.dart';
+import 'package:flexwala/features/auth/presentation/bloc/auth_bloc.dart';
 import 'event_bus.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
-        title: 'Flexify',
+        title: 'Flaxwala',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorSchemeSeed: const Color(0xFF1D4ED8),
@@ -62,3 +62,4 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+

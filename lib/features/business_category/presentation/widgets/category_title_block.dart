@@ -46,3 +46,4 @@ class CategoryTitleBlock extends StatelessWidget {
     );
   }
 }
+
