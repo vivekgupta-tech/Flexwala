@@ -33,35 +33,39 @@ class ServiceGridItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.cardBorder),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 3),
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(height: 28, width: 28, child: item.icon),
-              const SizedBox(height: 5),
-              Text(
-                item.title,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 9,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textDark,
-                  height: 1.2,
+              SizedBox(height: 24, width: 24, child: item.icon),
+              const SizedBox(height: 4),
+              Flexible(
+                child: Text(
+                  item.title,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 9,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textDark,
+                    height: 1.1,
+                  ),
                 ),
               ),
               const SizedBox(height: 2),
-              Text(
-                item.posterCount,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 8,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.counterPurple,
+              Flexible(
+                child: Text(
+                  item.posterCount,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 8,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.counterPurple,
+                  ),
                 ),
               ),
             ],
