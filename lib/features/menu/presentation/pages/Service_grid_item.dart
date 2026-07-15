@@ -33,13 +33,13 @@ class ServiceGridItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.cardBorder),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(height: 24, width: 24, child: item.icon),
-              const SizedBox(height: 4),
+              SizedBox(height: 22, width: 22, child: item.icon),
+              const SizedBox(height: 3),
               Flexible(
                 child: Text(
                   item.title,
@@ -47,14 +47,14 @@ class ServiceGridItem extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontSize: 9,
+                    fontSize: 8.5,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textDark,
                     height: 1.1,
                   ),
                 ),
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: 1),
               Flexible(
                 child: Text(
                   item.posterCount,
@@ -62,7 +62,7 @@ class ServiceGridItem extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 8,
+                    fontSize: 7.5,
                     fontWeight: FontWeight.w500,
                     color: AppColors.counterPurple,
                   ),
