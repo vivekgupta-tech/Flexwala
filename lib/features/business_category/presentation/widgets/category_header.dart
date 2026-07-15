@@ -7,7 +7,6 @@ import '../../../../core/theme/app_text_styles.dart';
 /// hamburger · mascot logo · Flexwala text + tagline · Pro Premium · bell · wallet.
 class CategoryHeader extends StatelessWidget {
   final int notificationCount;
-  final VoidCallback? onMenuTap;
   final VoidCallback? onProTap;
   final VoidCallback? onBellTap;
   final VoidCallback? onWalletTap;
@@ -15,7 +14,6 @@ class CategoryHeader extends StatelessWidget {
   const CategoryHeader({
     super.key,
     this.notificationCount = 0,
-    this.onMenuTap,
     this.onProTap,
     this.onBellTap,
     this.onWalletTap,
@@ -26,16 +24,6 @@ class CategoryHeader extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // Hamburger
-        InkWell(
-          onTap: onMenuTap,
-          borderRadius: BorderRadius.circular(8),
-          child: const Padding(
-            padding: EdgeInsets.all(4),
-            child: Icon(Icons.menu, size: 24, color: AppColors.textPrimary),
-          ),
-        ),
-        const SizedBox(width: 8),
         // Mascot logo image
         Image.asset(
           'assets/images/logopng.png',

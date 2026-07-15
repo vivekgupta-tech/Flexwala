@@ -67,7 +67,7 @@ class BusinessCategoryPage extends StatelessWidget {
                       crossAxisCount: 5,
                       mainAxisSpacing: 6,
                       crossAxisSpacing: 6,
-                      childAspectRatio: 0.72,
+                      childAspectRatio: 0.64, // Sufficient height for 2-line text and count
                     ),
                     itemBuilder: (context, index) {
                       final item = BusinessCategoryMockData.categories[index];
@@ -123,17 +123,18 @@ class _BusinessGridTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: const Color(0xFFEEEEEE)),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               // Icon area with soft background circle
               Stack(
                 clipBehavior: Clip.none,
                 children: [
                   Container(
-                    width: 42,
-                    height: 42,
+                    width: 38,
+                    height: 38,
                     decoration: BoxDecoration(
                       color: item.iconBackground,
                       shape: BoxShape.circle,
@@ -141,7 +142,7 @@ class _BusinessGridTile extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Icon(
                       item.emojiIcon,
-                      size: 20,
+                      size: 18,
                       color: AppColors.textDark,
                     ),
                   ),
@@ -151,7 +152,7 @@ class _BusinessGridTile extends StatelessWidget {
                     top: -4,
                     child: Icon(
                       item.isFavorite ? Icons.favorite : Icons.favorite_border,
-                      size: 13,
+                      size: 12,
                       color: item.isFavorite
                           ? Colors.red
                           : const Color(0xFFBBBBBB),
@@ -159,24 +160,26 @@ class _BusinessGridTile extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 5),
-              Text(
-                item.name,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 9.5,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF1A1A2E),
-                  height: 1.2,
+              const SizedBox(height: 4),
+              Flexible(
+                child: Text(
+                  item.name,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 9,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF1A1A2E),
+                    height: 1.1,
+                  ),
                 ),
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: 1),
               Text(
                 '${item.postCount}+ पोस्टर',
                 style: const TextStyle(
-                  fontSize: 8,
+                  fontSize: 7.5,
                   fontWeight: FontWeight.w500,
                   color: AppColors.primaryOrange,
                 ),
