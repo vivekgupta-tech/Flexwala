@@ -79,15 +79,17 @@ class HomePage extends StatelessWidget {
                   // Placeholder for Trending
                   Container(
                     height: 160,
-                    margin: const EdgeInsets.bottom(20),
+                    margin: const EdgeInsets.only(bottom: 20),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: Colors.grey[200]!),
                     ),
                     child: const Center(
-                      child: Text('Trending Content Coming Soon', 
-                        style: TextStyle(color: Colors.grey)),
+                      child: Text(
+                        'Trending Content Coming Soon',
+                        style: TextStyle(color: Colors.grey),
+                      ),
                     ),
                   ),
                 ],
