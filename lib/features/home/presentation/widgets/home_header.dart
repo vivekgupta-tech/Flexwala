@@ -31,7 +31,7 @@ class HomeHeader extends StatelessWidget {
           child: Center(
             child: Image.asset(
               'assets/images/topappbarpng.png',
-              height: 54,
+              height: 60,
               fit: BoxFit.contain,
             ),
           ),
