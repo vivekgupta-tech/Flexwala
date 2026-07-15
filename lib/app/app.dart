@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
-        title: 'flexwala',
+        title: 'Flexwala',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorSchemeSeed: const Color(0xFF1D4ED8),
