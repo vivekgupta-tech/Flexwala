@@ -248,7 +248,7 @@ class BusinessCategoryScreen extends StatelessWidget {
         crossAxisCount: 5,
         mainAxisSpacing: 8,
         crossAxisSpacing: 8,
-        childAspectRatio: 0.65,
+        childAspectRatio: 0.64,
       ),
       itemBuilder: (context, index) {
         return ServiceGridItem(
