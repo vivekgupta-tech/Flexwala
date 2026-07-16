@@ -21,17 +21,18 @@ class ServiceGridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Material(
-      color: Colors.white,
+      color: theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
-        splashColor: AppColors.primaryPurple.withValues(alpha: 0.1),
+        splashColor: theme.colorScheme.primary.withValues(alpha: 0.1),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.cardBorder),
+            border: Border.all(color: theme.dividerColor),
           ),
           padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 1),
           child: Column(
@@ -46,10 +47,10 @@ class ServiceGridItem extends StatelessWidget {
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: theme.textTheme.labelSmall?.copyWith(
                     fontSize: 8,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textDark,
+                    color: theme.colorScheme.onSurface,
                     height: 1.0,
                   ),
                 ),
@@ -61,10 +62,10 @@ class ServiceGridItem extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: theme.textTheme.labelSmall?.copyWith(
                     fontSize: 7,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.counterPurple,
+                    color: theme.colorScheme.primary,
                   ),
                 ),
               ),

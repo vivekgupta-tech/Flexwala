@@ -26,21 +26,26 @@ class BusinessCategoryScreen extends StatelessWidget {
   ];
 
   void _showComingSoon(BuildContext context) {
+    final theme = Theme.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Coming Soon!'),
+        content: Text(
+          'Coming Soon!',
+          style: TextStyle(color: theme.colorScheme.onPrimary),
+        ),
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 1),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        backgroundColor: AppColors.primaryPurple,
+        backgroundColor: theme.colorScheme.primary,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       drawer: const AppDrawer(),
       body: SafeArea(
         child: Column(
@@ -54,11 +59,11 @@ class BusinessCategoryScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: [
                   const SizedBox(height: 8),
-                  _buildSearchRow(),
+                  _buildSearchRow(context),
                   const SizedBox(height: 16),
-                  _buildOnlineServicesBanner(),
+                  _buildOnlineServicesBanner(context),
                   const SizedBox(height: 20),
-                  _buildSectionHeader(),
+                  _buildSectionHeader(context),
                   const SizedBox(height: 14),
                   _buildServiceGrid(context),
                   const SizedBox(height: 16),
@@ -85,10 +90,11 @@ class BusinessCategoryScreen extends StatelessWidget {
   }
 
   Widget _buildTopBar(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       children: [
         IconButton(
-          icon: const Icon(Icons.arrow_back_rounded, size: 26, color: AppColors.textDark),
+          icon: Icon(Icons.arrow_back_rounded, size: 26, color: theme.colorScheme.onSurface),
           onPressed: () => Navigator.pop(context),
         ),
         const SizedBox(width: 4),
@@ -98,8 +104,8 @@ class BusinessCategoryScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ShaderMask(
-                shaderCallback: (bounds) => const LinearGradient(
-                  colors: [Color(0xFFF97316), Color(0xFFDB2777)],
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [theme.colorScheme.primary, theme.colorScheme.secondary],
                 ).createShader(bounds),
                 child: const Text(
                   'Flexwalá',
@@ -110,19 +116,24 @@ class BusinessCategoryScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const Text(
+              Text(
                 'डिजिटल ओळख + ब्रँडिंग प्लॅटफॉर्म',
-                style: TextStyle(fontSize: 10, color: AppColors.textGrey, fontWeight: FontWeight.w600),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                ),
               ),
             ],
           ),
         ),
-        _buildIconWithBadge(Icons.notifications_none_rounded, '3'),
+        _buildIconWithBadge(context, Icons.notifications_none_rounded, '3'),
       ],
     );
   }
 
-  Widget _buildIconWithBadge(IconData icon, String badge) {
+  Widget _buildIconWithBadge(BuildContext context, IconData icon, String badge) {
+    final theme = Theme.of(context);
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -130,22 +141,22 @@ class BusinessCategoryScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: AppColors.cardBorder),
+            border: Border.all(color: theme.dividerColor),
           ),
-          child: Icon(icon, size: 20, color: AppColors.textDark),
+          child: Icon(icon, size: 20, color: theme.colorScheme.onSurface),
         ),
         Positioned(
           top: -2,
           right: -2,
           child: Container(
             padding: const EdgeInsets.all(4),
-            decoration: const BoxDecoration(
-              color: Colors.red,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.error,
               shape: BoxShape.circle,
             ),
             child: Text(
               badge,
-              style: const TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
+              style: TextStyle(color: theme.colorScheme.onError, fontSize: 8, fontWeight: FontWeight.bold),
             ),
           ),
         ),
@@ -153,21 +164,22 @@ class BusinessCategoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSearchRow() {
+  Widget _buildSearchRow(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.searchBg,
+        color: theme.colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(14),
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(Icons.search, color: AppColors.textGrey, size: 20),
-          SizedBox(width: 10),
+          Icon(Icons.search, color: theme.colorScheme.onSurfaceVariant, size: 20),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               'आप आज काय बनाना चाहते हैं?',
-              style: TextStyle(color: AppColors.textGrey, fontSize: 13),
+              style: TextStyle(color: theme.colorScheme.onSurfaceVariant, fontSize: 13),
             ),
           ),
         ],
@@ -175,11 +187,12 @@ class BusinessCategoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOnlineServicesBanner() {
+  Widget _buildOnlineServicesBanner(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.bannerBg,
+        color: theme.colorScheme.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -192,26 +205,26 @@ class BusinessCategoryScreen extends StatelessWidget {
                 height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
-                  gradient: const LinearGradient(
-                    colors: [AppColors.bannerStart, AppColors.bannerEnd],
+                  gradient: LinearGradient(
+                    colors: [theme.colorScheme.primary, theme.colorScheme.secondary],
                   ),
                 ),
                 child: const Icon(Icons.language_rounded, color: Colors.white, size: 26),
               ),
               const SizedBox(width: 14),
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Online Services',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.textDark)),
-                    SizedBox(height: 2),
-                    Text('डिजिटल सेवाएं, आसान समाधान', style: TextStyle(fontSize: 11, color: AppColors.textGrey)),
+                        style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800, color: theme.colorScheme.onSurface)),
+                    const SizedBox(height: 2),
+                    Text('डिजिटल सेवाएं, आसान समाधान', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
                   ],
                 ),
               ),
-              const Icon(Icons.laptop_mac_rounded,
-                  size: 40, color: AppColors.primaryPurple),
+              Icon(Icons.laptop_mac_rounded,
+                  size: 40, color: theme.colorScheme.primary),
             ],
           ),
           const SizedBox(height: 18),
@@ -228,13 +241,14 @@ class BusinessCategoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader() {
-    return const Column(
+  Widget _buildSectionHeader(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('सेवा चुनें', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.textDark)),
-        SizedBox(height: 2),
-        Text('नीचे दी गई सेवाओं में से चुनें', style: TextStyle(fontSize: 12, color: AppColors.textGrey)),
+        Text('सेवा चुनें', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800, color: theme.colorScheme.onSurface)),
+        const SizedBox(height: 2),
+        Text('नीचे दी गई सेवाओं में से चुनें', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
       ],
     );
   }
@@ -260,10 +274,11 @@ class BusinessCategoryScreen extends StatelessWidget {
   }
 
   Widget _buildBottomBanner(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.bannerBg,
+        color: theme.colorScheme.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -272,16 +287,16 @@ class BusinessCategoryScreen extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
-                child: const Icon(Icons.lock_outline_rounded, color: AppColors.primaryPurple),
+                decoration: BoxDecoration(color: theme.colorScheme.surface, borderRadius: BorderRadius.circular(12)),
+                child: Icon(Icons.lock_outline_rounded, color: theme.colorScheme.primary),
               ),
               const SizedBox(width: 12),
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('सभी सेवाओं के पोस्टर', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-                    Text('प्रोफेशनल पोस्टर डिजाइन डाउनलोड करें', style: TextStyle(fontSize: 11, color: AppColors.textGrey)),
+                    Text('सभी सेवाओं के पोस्टर', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface)),
+                    Text('प्रोफेशनल पोस्टर डिजाइन डाउनलोड करें', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
                   ],
                 ),
               ),
@@ -293,8 +308,8 @@ class BusinessCategoryScreen extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () => _showComingSoon(context),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryPurple,
-                foregroundColor: Colors.white,
+                backgroundColor: theme.colorScheme.primary,
+                foregroundColor: theme.colorScheme.onPrimary,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                 elevation: 0,
@@ -324,22 +339,23 @@ class _StatItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       children: [
         Container(
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Icon(icon, size: 16, color: AppColors.primaryPurple),
+          child: Icon(icon, size: 16, color: theme.colorScheme.primary),
         ),
         const SizedBox(width: 6),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(value, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppColors.textDark)),
-            Text(label, style: const TextStyle(fontSize: 10, color: AppColors.textGrey, fontWeight: FontWeight.w500)),
+            Text(value, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800, color: theme.colorScheme.onSurface)),
+            Text(label, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurface.withValues(alpha: 0.6), fontWeight: FontWeight.w500)),
           ],
         ),
       ],

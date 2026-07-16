@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flexwala/core/di/injection_container.dart';
 import 'package:flexwala/core/navigation/app_router.dart';
 import 'package:flexwala/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flexwala/core/theme/app_theme.dart';
 import 'event_bus.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -45,16 +46,8 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: navigatorKey,
         title: 'Flexwala',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorSchemeSeed: const Color(0xFF1D4ED8),
-          useMaterial3: true,
-          brightness: Brightness.light,
-        ),
-        darkTheme: ThemeData(
-          colorSchemeSeed: const Color(0xFF1D4ED8),
-          useMaterial3: true,
-          brightness: Brightness.dark,
-        ),
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
         themeMode: ThemeMode.system,
         initialRoute: AppRoutes.home,
         onGenerateRoute: AppRoutes.generateRoute,
