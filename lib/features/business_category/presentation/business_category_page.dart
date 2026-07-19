@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/navigation/app_bottom_nav.dart';
 import '../../home/presentation/widgets/premium_banner.dart';
+import '../../template/template_screen.dart';
 import '../data/business_category_mock_data.dart';
 import 'widgets/category_header.dart';
 import 'widgets/category_search_bar.dart';
@@ -73,8 +74,15 @@ class BusinessCategoryPage extends StatelessWidget {
                       final item = BusinessCategoryMockData.categories[index];
                       return _BusinessGridTile(
                         item: item,
-                        onTap: () => _showComingSoon(context, item.name),
-                      );
+                        onTap: () {
+  if (item.id == 'general_store') {
+    Navigator.push(context, MaterialPageRoute(
+      builder: (_) => TemplateScreen(subCategoryName: item.name),
+    ));
+  } else {
+    _showComingSoon(context, item.name);
+  }
+},                      );
                     },
                   ),
                   const SizedBox(height: 16),

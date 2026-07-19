@@ -11,6 +11,7 @@ class EditorState extends Equatable {
   /// isi boundary.toImage(pixelRatio: 4) se hoga.
   final GlobalKey canvasKey;
   final String? backgroundUrl;
+  final bool isAssetBackground;
   final List<Layer> layers;
   final String? selectedLayerId;
   final List<List<Layer>> undoStack;
@@ -29,6 +30,7 @@ class EditorState extends Equatable {
   const EditorState({
     required this.canvasKey,
     this.backgroundUrl,
+    this.isAssetBackground = false,
     this.layers = const [],
     this.selectedLayerId,
     this.undoStack = const [],
@@ -45,6 +47,7 @@ class EditorState extends Equatable {
 
   EditorState copyWith({
     String? backgroundUrl,
+    bool? isAssetBackground,
     List<Layer>? layers,
     String? selectedLayerId,
     bool clearSelection = false,
@@ -63,6 +66,7 @@ class EditorState extends Equatable {
     return EditorState(
       canvasKey: canvasKey,
       backgroundUrl: backgroundUrl ?? this.backgroundUrl,
+      isAssetBackground: isAssetBackground ?? this.isAssetBackground,
       layers: layers ?? this.layers,
       selectedLayerId: clearSelection ? null : (selectedLayerId ?? this.selectedLayerId),
       undoStack: undoStack ?? this.undoStack,
@@ -81,6 +85,7 @@ class EditorState extends Equatable {
   @override
   List<Object?> get props => [
         backgroundUrl,
+        isAssetBackground,
         layers,
         selectedLayerId,
         undoStack.length,

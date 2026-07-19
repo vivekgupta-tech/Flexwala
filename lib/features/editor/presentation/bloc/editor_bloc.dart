@@ -50,7 +50,11 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
   }
 
   void _onTemplateSelected(TemplateSelected event, Emitter<EditorState> emit) {
-    emit(state.copyWith(backgroundUrl: event.template.backgroundUrl, layers: const []));
+    emit(state.copyWith(
+      backgroundUrl: event.template.backgroundUrl,
+      isAssetBackground: event.template.isAsset,
+      layers: const [],
+    ));
   }
 
   void _pushUndo(Emitter<EditorState> emit) {

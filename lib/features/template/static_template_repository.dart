@@ -10,13 +10,13 @@ class StaticTemplateRepository implements TemplateRepository {
       EditorTemplate(
         id: 'static_1',
         title: 'Template 1',
-        backgroundUrl: 'assets/templates/template_1.png',
+        backgroundUrl: 'assets/images/template1.png',
         isAsset: true,
       ),
       EditorTemplate(
         id: 'static_2',
         title: 'Template 2',
-        backgroundUrl: 'assets/templates/template_2.png',
+        backgroundUrl: 'assets/images/template2.png',
         isAsset: true,
       ),
     ];

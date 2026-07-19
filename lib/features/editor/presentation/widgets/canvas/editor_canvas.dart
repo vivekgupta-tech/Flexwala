@@ -25,7 +25,9 @@ class EditorCanvas extends StatelessWidget {
                 GestureDetector(
                   onTap: () => context.read<EditorBloc>().add(const LayerSelected(null)),
                   child: state.backgroundUrl != null
-                      ? Image.network(state.backgroundUrl!, fit: BoxFit.cover)
+                      ? (state.isAssetBackground
+                          ? Image.asset(state.backgroundUrl!, fit: BoxFit.cover)
+                          : Image.network(state.backgroundUrl!, fit: BoxFit.cover))
                       : const Center(
                           child: Text(
                             'Template select karo shuru karne ke liye',
