@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../domain/entities/shape_layer.dart';
-import '../../domain/entities/text_layer.dart';
-import '../bloc/editor_bloc.dart';
-import '../bloc/editor_event.dart';
-import '../bloc/editor_state.dart';
-import '../widgets/canvas/editor_canvas.dart';
-import '../widgets/panels/layer_quick_panel.dart';
-import '../widgets/sheets/template_picker_sheet.dart';
-import '../widgets/sheets/text_input_sheet.dart';
-import '../widgets/sheets/tools_bottom_sheet.dart';
-import '../widgets/toolbars/draw_toolbar.dart';
-import '../widgets/toolbars/shape_selection_toolbar.dart';
-import '../widgets/toolbars/shape_toolbar.dart';
-import '../widgets/toolbars/TextLayerToolbar.dart';
+import 'package:flexwala/features/editor/domain/entities/shape_layer.dart';
+import 'package:flexwala/features/editor/domain/entities/text_layer.dart';
+import 'package:flexwala/features/editor/presentation/bloc/editor_bloc.dart';
+import 'package:flexwala/features/editor/presentation/bloc/editor_event.dart';
+import 'package:flexwala/features/editor/presentation/bloc/editor_state.dart';
+import 'package:flexwala/features/editor/presentation/widgets/canvas/editor_canvas.dart';
+import 'package:flexwala/features/editor/presentation/widgets/panels/layer_quick_panel.dart';
+import 'package:flexwala/features/editor/presentation/widgets/sheets/template_picker_sheet.dart';
+import 'package:flexwala/features/editor/presentation/widgets/sheets/text_input_sheet.dart';
+import 'package:flexwala/features/editor/presentation/widgets/sheets/tools_bottom_sheet.dart';
+import 'package:flexwala/features/editor/presentation/widgets/toolbars/draw_toolbar.dart';
+import 'package:flexwala/features/editor/presentation/widgets/toolbars/shape_selection_toolbar.dart';
+import 'package:flexwala/features/editor/presentation/widgets/toolbars/shape_toolbar.dart';
+import 'package:flexwala/features/editor/presentation/widgets/toolbars/TextLayerToolbar.dart';
 
-/// Screen bilkul free rehti hai. Top pe sirf back + 1 menu icon.
-/// Bottom-right corner me 3 chhote floating icons (Template, draw
-/// color, draw thickness). Text/Shape select hone par ya Draw mode on
-/// hone par canvas ke bilkul upar ek chhota contextual toolbar aata
-/// hai — baaki poora screen hamesha free rehta hai.
 class EditorScreen extends StatefulWidget {
   const EditorScreen({super.key});
 
@@ -77,27 +72,17 @@ class _EditorScreenState extends State<EditorScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // Canvas hamesha poori screen fill karta hai, image is ke
-          // andar Center + FittedBox se center hona chahiye
-          // (editor_canvas.dart me).
           const Positioned.fill(
             child: Center(child: EditorCanvas()),
           ),
-
           _MinimalTopBar(onMenuTap: _openToolsMenu),
-
-          // Contextual toolbar (Draw / Shape / Text / ShapePicker).
-          // Isse decide karte hain ki floating corner icons dikhne
-          // chahiye ya nahi, taaki dono kabhi overlap na karein.
           BlocBuilder<EditorBloc, EditorState>(
             builder: (context, state) {
               Widget? toolbar;
-
               if (state.isDrawMode) {
                 toolbar = const DrawToolbar();
               } else {
-                final matches =
-                state.layers.where((l) => l.id == state.selectedLayerId);
+                final matches = state.layers.where((l) => l.id == state.selectedLayerId);
                 if (matches.isNotEmpty) {
                   final layer = matches.first;
                   if (layer is TextLayer) {
@@ -113,7 +98,6 @@ class _EditorScreenState extends State<EditorScreen> {
               }
 
               final showFloatingControls = toolbar == null;
-
               return Stack(
                 children: [
                   if (toolbar != null)
@@ -175,12 +159,20 @@ class _FloatingLayerControls extends StatelessWidget {
           children: [
             _RoundIconButton(
               icon: Icons.dashboard_customize_outlined,
-              onTap: () => showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                backgroundColor: Colors.transparent,
-                builder: (_) => const TemplatePickerSheet(),
-              ),
+              onTap: () {
+                final bloc = context.read<EditorBloc>();
+                // Sheet kholne se pehle load event bhej rahe hain
+                bloc.add(const LoadTemplates()); 
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (_) => BlocProvider.value(
+                    value: bloc,
+                    child: const TemplatePickerSheet(),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 10),
             _RoundIconButton(

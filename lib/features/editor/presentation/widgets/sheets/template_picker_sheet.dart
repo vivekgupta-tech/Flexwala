@@ -76,10 +76,15 @@ class TemplatePickerSheet extends StatelessWidget {
                           },
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              template.backgroundUrl,
-                              fit: BoxFit.cover,
-                            ),
+                            child: template.isAsset
+                                ? Image.asset(
+                                    template.backgroundUrl,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    template.backgroundUrl,
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                         );
                       },
