@@ -63,8 +63,9 @@ class _EditorScreenState extends State<EditorScreen> {
         break;
       default:
         if (mounted) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('Ye module jald aa raha hai')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Ye module jald aa raha hai')),
+          );
         }
     }
   }
@@ -76,30 +77,56 @@ class _EditorScreenState extends State<EditorScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          const Positioned.fill(child: EditorCanvas()),
-          _MinimalTopBar(onMenuTap: _openToolsMenu),
-          const _FloatingLayerControls(),
-          Positioned(
-            left: 12,
-            right: 12,
-            bottom: 90,
-            child: BlocBuilder<EditorBloc, EditorState>(
-              builder: (context, state) {
-                if (state.isDrawMode) return const DrawToolbar();
+          // Canvas hamesha poori screen fill karta hai, image is ke
+          // andar Center + FittedBox se center hona chahiye
+          // (editor_canvas.dart me).
+          const Positioned.fill(
+            child: Center(child: EditorCanvas()),
+          ),
 
-                final matches = state.layers.where((l) => l.id == state.selectedLayerId);
+          _MinimalTopBar(onMenuTap: _openToolsMenu),
+
+          // Contextual toolbar (Draw / Shape / Text / ShapePicker).
+          // Isse decide karte hain ki floating corner icons dikhne
+          // chahiye ya nahi, taaki dono kabhi overlap na karein.
+          BlocBuilder<EditorBloc, EditorState>(
+            builder: (context, state) {
+              Widget? toolbar;
+
+              if (state.isDrawMode) {
+                toolbar = const DrawToolbar();
+              } else {
+                final matches =
+                state.layers.where((l) => l.id == state.selectedLayerId);
                 if (matches.isNotEmpty) {
                   final layer = matches.first;
-                  if (layer is TextLayer) return TextLayerToolbar(layer: layer);
-                  if (layer is ShapeLayer) return ShapeSelectionToolbar(layer: layer);
+                  if (layer is TextLayer) {
+                    toolbar = TextLayerToolbar(layer: layer);
+                  } else if (layer is ShapeLayer) {
+                    toolbar = ShapeSelectionToolbar(layer: layer);
+                  }
+                } else if (_showShapePicker) {
+                  toolbar = ShapeToolbar(
+                    onPicked: () => setState(() => _showShapePicker = false),
+                  );
                 }
+              }
 
-                if (_showShapePicker) {
-                  return ShapeToolbar(onPicked: () => setState(() => _showShapePicker = false));
-                }
-                return const SizedBox.shrink();
-              },
-            ),
+              final showFloatingControls = toolbar == null;
+
+              return Stack(
+                children: [
+                  if (toolbar != null)
+                    Positioned(
+                      left: 12,
+                      right: 12,
+                      bottom: 90,
+                      child: toolbar,
+                    ),
+                  if (showFloatingControls) const _FloatingLayerControls(),
+                ],
+              );
+            },
           ),
         ],
       ),
@@ -119,7 +146,10 @@ class _MinimalTopBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _RoundIconButton(icon: Icons.arrow_back, onTap: () => Navigator.of(context).maybePop()),
+            _RoundIconButton(
+              icon: Icons.arrow_back,
+              onTap: () => Navigator.of(context).maybePop(),
+            ),
             _RoundIconButton(icon: Icons.menu_rounded, onTap: onMenuTap),
           ],
         ),
@@ -137,6 +167,9 @@ class _FloatingLayerControls extends StatelessWidget {
       right: 12,
       bottom: 24,
       child: SafeArea(
+        top: false,
+        left: false,
+        right: false,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -153,9 +186,14 @@ class _FloatingLayerControls extends StatelessWidget {
             _RoundIconButton(
               icon: Icons.palette_outlined,
               onTap: () async {
-                final result = await showLayerQuickPanel(context: context, type: LayerPanelType.color);
+                final bloc = context.read<EditorBloc>();
+                final result = await showLayerQuickPanel(
+                  context: context,
+                  type: LayerPanelType.color,
+                  initialValue: bloc.state.activeDrawColor,
+                );
                 if (result != null && context.mounted) {
-                  context.read<EditorBloc>().add(DrawColorChanged(result as Color));
+                  bloc.add(DrawColorChanged(result as Color));
                 }
               },
             ),
@@ -163,10 +201,14 @@ class _FloatingLayerControls extends StatelessWidget {
             _RoundIconButton(
               icon: Icons.line_weight_rounded,
               onTap: () async {
-                final result =
-                    await showLayerQuickPanel(context: context, type: LayerPanelType.thickness);
+                final bloc = context.read<EditorBloc>();
+                final result = await showLayerQuickPanel(
+                  context: context,
+                  type: LayerPanelType.thickness,
+                  initialValue: bloc.state.activeDrawWidth,
+                );
                 if (result != null && context.mounted) {
-                  context.read<EditorBloc>().add(DrawWidthChanged(result as double));
+                  bloc.add(DrawWidthChanged(result as double));
                 }
               },
             ),
@@ -190,7 +232,10 @@ class _RoundIconButton extends StatelessWidget {
       child: InkWell(
         customBorder: const CircleBorder(),
         onTap: onTap,
-        child: Padding(padding: const EdgeInsets.all(10), child: Icon(icon, color: Colors.white, size: 20)),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Icon(icon, color: Colors.white, size: 20),
+        ),
       ),
     );
   }

@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 
-/// Ye do panels reference (Smart Whiteboard) ke color-row aur
-/// thickness-row ka replacement hain — hamesha dikhne ke bajaye ab
-/// sirf apna icon dabane par khulte hain. Color panel Color return
-/// karta hai, thickness panel double — dono `Future<dynamic>` hain
-/// isliye caller apni jagah pe cast kar leta hai.
 enum LayerPanelType { color, thickness }
 
 Future<dynamic> showLayerQuickPanel({
   required BuildContext context,
   required LayerPanelType type,
+  dynamic initialValue,
 }) {
   return showModalBottomSheet<dynamic>(
     context: context,
     backgroundColor: Colors.transparent,
-    builder: (_) => _LayerQuickPanel(type: type),
+    isScrollControlled: true,
+    builder: (_) => _LayerQuickPanel(type: type, initialValue: initialValue),
   );
 }
 
 class _LayerQuickPanel extends StatefulWidget {
   final LayerPanelType type;
-  const _LayerQuickPanel({required this.type});
+  final dynamic initialValue;
+  const _LayerQuickPanel({required this.type, this.initialValue});
 
   @override
   State<_LayerQuickPanel> createState() => _LayerQuickPanelState();
@@ -28,70 +26,139 @@ class _LayerQuickPanel extends StatefulWidget {
 
 class _LayerQuickPanelState extends State<_LayerQuickPanel> {
   static const _colors = [
-    Colors.black,
-    Colors.white,
-    Colors.grey,
-    Colors.red,
-    Colors.deepOrange,
-    Colors.amber,
-    Colors.green,
-    Colors.blue,
+    Colors.black, Colors.white, Colors.red, Colors.pink, Colors.purple,
+    Colors.deepPurple, Colors.indigo, Colors.blue, Colors.lightBlue,
+    Colors.cyan, Colors.teal, Colors.green, Colors.lightGreen, Colors.lime,
+    Colors.yellow, Colors.amber, Colors.orange, Colors.deepOrange, Colors.brown, Colors.grey,
   ];
-  double _thickness = 4;
+  
+  late double _thickness;
+
+  @override
+  void initState() {
+    super.initState();
+    _thickness = (widget.initialValue is num) ? widget.initialValue.toDouble() : 4.0;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        margin: const EdgeInsets.all(12),
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: const [
-            BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 4)),
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+        left: 16,
+        right: 16,
+      ),
+      child: Material(
+        color: Colors.white,
+        elevation: 10,
+        borderRadius: BorderRadius.circular(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 12),
+            // Handle
+            Container(
+              width: 36,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              widget.type == LayerPanelType.color ? 'रंग निवडा' : 'जाडी निवडा',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black87),
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              child: widget.type == LayerPanelType.color ? _colorGrid() : _thicknessControls(),
+            ),
+            const SizedBox(height: 20),
           ],
         ),
-        child: widget.type == LayerPanelType.color ? _colorRow(context) : _thicknessRow(context),
       ),
     );
   }
 
-  Widget _colorRow(BuildContext context) {
+  Widget _colorGrid() {
     return SizedBox(
-      height: 40,
+      height: 50,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: _colors.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 14),
-        itemBuilder: (context, i) => GestureDetector(
-          onTap: () => Navigator.of(context).pop(_colors[i]),
-          child: CircleAvatar(
-            backgroundColor: _colors[i],
-            radius: 16,
-            child: _colors[i] == Colors.white
-                ? const Icon(Icons.circle_outlined, size: 14, color: Colors.black26)
-                : null,
-          ),
-        ),
+        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        itemBuilder: (context, i) {
+          final isSelected = widget.initialValue == _colors[i];
+          return GestureDetector(
+            onTap: () => Navigator.of(context).pop(_colors[i]),
+            child: Container(
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected ? Colors.blue : Colors.transparent,
+                  width: 2,
+                ),
+              ),
+              child: CircleAvatar(
+                backgroundColor: _colors[i],
+                radius: 18,
+                child: _colors[i] == Colors.white
+                    ? const Icon(Icons.circle_outlined, size: 16, color: Colors.black12)
+                    : null,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _thicknessRow(BuildContext context) {
-    return Row(
+  Widget _thicknessControls() {
+    return Column(
       children: [
-        Icon(Icons.circle, size: 6 + _thickness / 2),
-        Expanded(
-          child: Slider(
-            value: _thickness,
-            min: 1,
-            max: 30,
-            onChanged: (v) => setState(() => _thickness = v),
-            onChangeEnd: (v) => Navigator.of(context).pop(v),
+        // Live Preview of thickness
+        Container(
+          height: 30,
+          alignment: Alignment.center,
+          child: Container(
+            width: double.infinity,
+            height: _thickness.clamp(1, 25),
+            decoration: BoxDecoration(
+              color: Colors.blue.shade700,
+              borderRadius: BorderRadius.circular(20),
+            ),
           ),
         ),
-        SizedBox(width: 28, child: Text('${_thickness.toInt()}')),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            const Icon(Icons.line_weight_rounded, size: 20, color: Colors.grey),
+            Expanded(
+              child: Slider(
+                value: _thickness,
+                min: 1,
+                max: 50,
+                divisions: 49,
+                onChanged: (v) => setState(() => _thickness = v),
+                onChangeEnd: (v) => Navigator.of(context).pop(v),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                '${_thickness.toInt()}',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
