@@ -10,9 +10,9 @@ import 'toolbar_chrome.dart';
 /// Jab bhi ek TextLayer canvas par selected hota hai, ye chhota
 /// floating toolbar canvas ke upar aa jaata hai — edit / size / bold /
 /// color / delete. Baaki poori screen tab bhi free rehti hai.
-class TextSelectionToolbar extends StatelessWidget {
+class TextLayerToolbar extends StatelessWidget {
   final TextLayer layer;
-  const TextSelectionToolbar({super.key, required this.layer});
+  const TextLayerToolbar({super.key, required this.layer});
 
   @override
   Widget build(BuildContext context) {

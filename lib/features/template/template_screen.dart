@@ -1,7 +1,10 @@
+import 'package:flexwala/features/template/static_template_repository.dart';
 import 'package:flutter/material.dart';
-import '../../../editor/data/repositories/static_template_repository.dart';
-import '../../../editor/domain/entities/template.dart';
-import '../../../editor/presentation/pages/editor_page.dart';
+
+import '../editor/domain/entities/template.dart';
+import 'editor_page.dart';
+
+
 
 /// General Store / Medical Store / Fast Food — sab isi ek screen ko
 /// reuse karenge, bas [subCategoryName] alag pass hoga (title ke liye).
@@ -9,9 +12,11 @@ import '../../../editor/presentation/pages/editor_page.dart';
 /// tap karte hi EditorPage khul jaata hai us image ke saath.
 ///
 /// Kahi se bhi is tarah push karo:
-///   Navigator.push(context, MaterialPageRoute(
-///     builder: (_) => const TemplateScreen(subCategoryName: 'General Store'),
-///   ));
+///   Navigator.pushNamed(
+///     context,
+///     AppRoutes.template,
+///     arguments: 'General Store',
+///   );
 class TemplateScreen extends StatelessWidget {
   final String subCategoryName;
   const TemplateScreen({super.key, required this.subCategoryName});

@@ -13,7 +13,7 @@ import '../widgets/sheets/tools_bottom_sheet.dart';
 import '../widgets/toolbars/draw_toolbar.dart';
 import '../widgets/toolbars/shape_selection_toolbar.dart';
 import '../widgets/toolbars/shape_toolbar.dart';
-import '../widgets/toolbars/text_selection_toolbar.dart';
+import '../widgets/toolbars/TextLayerToolbar.dart';
 
 /// Screen bilkul free rehti hai. Top pe sirf back + 1 menu icon.
 /// Bottom-right corner me 3 chhote floating icons (Template, draw
@@ -90,7 +90,7 @@ class _EditorScreenState extends State<EditorScreen> {
                 final matches = state.layers.where((l) => l.id == state.selectedLayerId);
                 if (matches.isNotEmpty) {
                   final layer = matches.first;
-                  if (layer is TextLayer) return TextSelectionToolbar(layer: layer);
+                  if (layer is TextLayer) return TextLayerToolbar(layer: layer);
                   if (layer is ShapeLayer) return ShapeSelectionToolbar(layer: layer);
                 }
 
