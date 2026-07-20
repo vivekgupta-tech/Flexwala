@@ -1,8 +1,7 @@
-// features/auth/domain/repositories/auth_repository.dart
 import '../../../../core/error/result.dart';
 import '../entities/user_entity.dart';
 
 abstract class AuthRepository {
-  Future<Result<UserEntity>> login({required String email, required String password});
+  Future<Result<Map<String, dynamic>>> sendOtp({required String mobile});
+  Future<Result<UserEntity>> verifyOtp({required String mobile, required String otp});
 }
-

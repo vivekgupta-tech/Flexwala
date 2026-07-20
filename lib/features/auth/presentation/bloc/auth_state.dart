@@ -11,6 +11,13 @@ sealed class AuthState extends Equatable {
 class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
+class OtpSent extends AuthState {
+  final String mobile;
+  const OtpSent(this.mobile);
+  @override
+  List<Object?> get props => [mobile];
+}
+
 class AuthSuccess extends AuthState {
   final UserEntity user;
   const AuthSuccess(this.user);

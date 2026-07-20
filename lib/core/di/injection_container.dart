@@ -15,7 +15,8 @@ import '../storage/secure_storage_service.dart';
 import '../../features/auth/data/datasources/auth_remote_datasource.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
-import '../../features/auth/domain/usecases/login_usecase.dart';
+import '../../features/auth/domain/usecases/send_otp_usecase.dart';
+import '../../features/auth/domain/usecases/verify_otp_usecase.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 
 final sl = GetIt.instance;
@@ -43,10 +44,13 @@ Future<void> initDependencies() async {
 
   // Feature: Auth
   sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(sl()));
-  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl(), sl()));
-  sl.registerLazySingleton(() => LoginUseCase(sl()));
-  sl.registerFactory(() => AuthBloc(loginUseCase: sl()));
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl(), sl(), sl()));
+  sl.registerLazySingleton(() => SendOtpUseCase(sl()));
+  sl.registerLazySingleton(() => VerifyOtpUseCase(sl()));
+  sl.registerFactory(() => AuthBloc(
+        sendOtpUseCase: sl(),
+        verifyOtpUseCase: sl(),
+      ));
 
   // Har naya feature yaha apne datasource/repo/usecase/bloc register karega
 }
-

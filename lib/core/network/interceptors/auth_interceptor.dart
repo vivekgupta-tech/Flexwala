@@ -21,7 +21,12 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    if (!options.path.contains('/auth/login')) {
+    final path = options.path;
+    final isAuthPath = path.contains(ApiEndpoints.sendOtp) || 
+                       path.contains(ApiEndpoints.verifyOtp) ||
+                       path.contains(ApiEndpoints.login);
+
+    if (!isAuthPath) {
       final token = await storage.getAccessToken();
       if (token != null) options.headers['Authorization'] = 'Bearer $token';
     }

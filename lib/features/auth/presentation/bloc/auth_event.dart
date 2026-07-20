@@ -1,4 +1,3 @@
-// features/auth/presentation/bloc/auth_event.dart
 import 'package:equatable/equatable.dart';
 
 sealed class AuthEvent extends Equatable {
@@ -7,11 +6,17 @@ sealed class AuthEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class LoginRequested extends AuthEvent {
-  final String email;
-  final String password;
-  const LoginRequested({required this.email, required this.password});
+class SendOtpRequested extends AuthEvent {
+  final String mobile;
+  const SendOtpRequested({required this.mobile});
   @override
-  List<Object?> get props => [email, password];
+  List<Object?> get props => [mobile];
 }
 
+class VerifyOtpRequested extends AuthEvent {
+  final String mobile;
+  final String otp;
+  const VerifyOtpRequested({required this.mobile, required this.otp});
+  @override
+  List<Object?> get props => [mobile, otp];
+}
