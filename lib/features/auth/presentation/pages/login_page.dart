@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flexwala/core/navigation/app_router.dart';
+import 'package:flexwala/core/theme/app_colors.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -14,25 +16,16 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _mobileCtrl = TextEditingController();
-  final _otpCtrl = TextEditingController();
-  bool _isOtpSent = false;
 
   @override
   void dispose() {
     _mobileCtrl.dispose();
-    _otpCtrl.dispose();
     super.dispose();
   }
 
   String? _validateMobile(String? value) {
     if (value == null || value.trim().isEmpty) return 'Mobile number required';
     if (value.trim().length != 10) return 'Enter a valid 10-digit mobile number';
-    return null;
-  }
-
-  String? _validateOtp(String? value) {
-    if (value == null || value.trim().isEmpty) return 'OTP required';
-    if (value.trim().length < 4) return 'Enter a valid OTP';
     return null;
   }
 
@@ -44,122 +37,211 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _onVerifyOtp() {
-    if (_formKey.currentState!.validate()) {
-      context.read<AuthBloc>().add(
-            VerifyOtpRequested(
-              mobile: _mobileCtrl.text.trim(),
-              otp: _otpCtrl.text.trim(),
-            ),
-          );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: SafeArea(
-        child: BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is OtpSent) {
-              setState(() {
-                _isOtpSent = true;
-              });
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('OTP sent successfully')),
+      backgroundColor: Colors.white,
+      body: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is OtpSent) {
+            Navigator.of(context).pushNamed(
+              AppRoutes.verifyOtp,
+              arguments: state.mobile,
+            );
+          } else if (state is AuthFailure) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Colors.redAccent,
+                  behavior: SnackBarBehavior.floating,
+                ),
               );
-            } else if (state is AuthSuccess) {
-              Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
-            } else if (state is AuthFailure) {
-              ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(SnackBar(content: Text(state.message)));
-            }
-          },
-          builder: (context, state) {
-            final isLoading = state is AuthLoading;
-            return Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Form(
-                  key: _formKey,
+          }
+        },
+        builder: (context, state) {
+          final isLoading = state is AuthLoading;
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                // Header with Gradient and Logo
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    gradient: AppColors.brandGradientDiagonal,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(40),
+                      bottomRight: Radius.circular(40),
+                    ),
+                  ),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        _isOtpSent ? 'Verify OTP' : 'Login with Mobile',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                        textAlign: TextAlign.center,
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 20,
+                              offset: const Offset(0, 10),
+                            ),
+                          ],
+                        ),
+                        child: const FlutterLogo(size: 80), // Replace with actual logo
                       ),
-                      const SizedBox(height: 24),
-                      TextFormField(
-                        controller: _mobileCtrl,
-                        keyboardType: TextInputType.phone,
-                        textInputAction: TextInputAction.next,
-                        enabled: !isLoading && !_isOtpSent,
-                        validator: _validateMobile,
-                        decoration: const InputDecoration(
-                          labelText: 'Mobile Number',
-                          prefixIcon: Icon(Icons.phone_android),
-                          border: OutlineInputBorder(),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Flexwala',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
                         ),
                       ),
-                      if (_isOtpSent) ...[
-                        const SizedBox(height: 16),
-                        TextFormField(
-                          controller: _otpCtrl,
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.done,
-                          enabled: !isLoading,
-                          validator: _validateOtp,
-                          onFieldSubmitted: (_) => _onVerifyOtp(),
-                          decoration: const InputDecoration(
-                            labelText: 'OTP',
-                            prefixIcon: Icon(Icons.lock_outline),
-                            border: OutlineInputBorder(),
-                          ),
+                      const Text(
+                        'Design Your Dreams',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 16,
+                          letterSpacing: 1,
                         ),
-                      ],
-                      const SizedBox(height: 24),
-                      ElevatedButton(
-                        onPressed: isLoading
-                            ? null
-                            : (_isOtpSent ? _onVerifyOtp : _onSendOtp),
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                        ),
-                        child: isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : Text(_isOtpSent ? 'Verify OTP' : 'Send OTP'),
                       ),
-                      if (_isOtpSent)
-                        TextButton(
-                          onPressed: isLoading
-                              ? null
-                              : () {
-                                  setState(() {
-                                    _isOtpSent = false;
-                                    _otpCtrl.clear();
-                                  });
-                                },
-                          child: const Text('Change Mobile Number'),
-                        ),
                     ],
                   ),
                 ),
-              ),
-            );
-          },
-        ),
+                
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+                        const Text(
+                          'Login',
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Please enter your mobile number to get an OTP.',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        
+                        // Mobile Input field
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade50,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey.shade200),
+                          ),
+                          child: TextFormField(
+                            controller: _mobileCtrl,
+                            keyboardType: TextInputType.phone,
+                            maxLength: 10,
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                            enabled: !isLoading,
+                            validator: _validateMobile,
+                            decoration: InputDecoration(
+                              labelText: 'Mobile Number',
+                              labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
+                              prefixIcon: const Icon(Icons.phone_android_rounded, color: AppColors.primaryPurple),
+                              prefixText: '+91 ',
+                              prefixStyle: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18),
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                              counterText: "",
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        
+                        // Send OTP Button
+                        SizedBox(
+                          width: double.infinity,
+                          height: 56,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: AppColors.brandGradient,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primaryPurple.withOpacity(0.3),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 6),
+                                ),
+                              ],
+                            ),
+                            child: ElevatedButton(
+                              onPressed: isLoading ? null : _onSendOtp,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              child: isLoading
+                                  ? const SizedBox(
+                                      height: 24,
+                                      width: 24,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : const Text(
+                                      'Send OTP',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ),
+                        
+                        const SizedBox(height: 30),
+                        Center(
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'By continuing, you agree to our ',
+                              style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                              children: const [
+                                TextSpan(
+                                  text: 'Terms & Conditions',
+                                  style: TextStyle(
+                                    color: AppColors.primaryPurple,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
