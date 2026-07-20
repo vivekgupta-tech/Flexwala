@@ -50,7 +50,11 @@ class _SplashPageState extends State<SplashPage> {
                 color: Colors.white,
                 shape: BoxShape.circle,
               ),
-              child: const FlutterLogo(size: 80),
+              child: Image.asset(
+                'assets/images/logopng.png',
+                width: 100,
+                height: 100,
+              ),
             ),
             const SizedBox(height: 24),
             const Text(

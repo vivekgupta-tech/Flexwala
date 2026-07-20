@@ -115,12 +115,10 @@ class HomePage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Welcome to', style: AppTextStyles.bannerEyebrow),
-              Text('Flexwala', style: AppTextStyles.pageTitle),
-            ],
+          Image.asset(
+            'assets/images/topappbarpng.png',
+            height: 40,
+            fit: BoxFit.contain,
           ),
           IconButton(
             onPressed: () {},

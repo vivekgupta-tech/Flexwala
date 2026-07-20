@@ -92,7 +92,11 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        child: const FlutterLogo(size: 80), // Replace with actual logo
+                        child: Image.asset(
+                          'assets/images/logopng.png',
+                          width: 80,
+                          height: 80,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       const Text(
