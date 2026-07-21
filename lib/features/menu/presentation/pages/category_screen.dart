@@ -116,15 +116,11 @@ class CategoryScreen extends StatelessWidget {
                             imageUrl: category.imageUrl,
                           ),
                           onTap: () {
-                            if (category.title.toLowerCase().contains('business')) {
-                               Navigator.pushNamed(context, AppRoutes.businessCategory);
-                            } else {
-                               Navigator.pushNamed(
-                                 context, 
-                                 AppRoutes.template, 
-                                 arguments: category.title
-                               );
-                            }
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.subCategory,
+                              arguments: category.id,
+                            );
                           },
                         );
                       },

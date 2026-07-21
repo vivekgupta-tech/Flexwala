@@ -10,4 +10,5 @@ class ApiEndpoints {
   static const String refreshToken = 'auth/refresh';
   static const String getProfile = 'admin/customers';
   static const String getCategories = 'admin/categories/all';
+  static const String getSubCategories = 'admin/subcategories/all';
 }

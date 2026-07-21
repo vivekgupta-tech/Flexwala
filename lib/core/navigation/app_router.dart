@@ -6,12 +6,12 @@ import '../../features/home/presentation/home_page_old.dart';
 import '../../features/posters/presentation/pages/poster_detail_screen.dart';
 import '../../features/menu/presentation/pages/category_screen.dart';
 import '../../features/menu/presentation/pages/menu_screen.dart';
-import '../../features/menu/presentation/pages/business_category_screen.dart';
-import '../../features/business_category/presentation/business_category_page.dart';
+import '../../features/sub_category/presentation/pages/sub_category_screen.dart';
 import '../../features/template/template_screen.dart';
 
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/profile/presentation/bloc/profile_bloc.dart';
+import '../../features/sub_category/presentation/bloc/sub_category_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../di/injection_container.dart';
 
@@ -24,8 +24,7 @@ class AppRoutes {
   static const String posterDetail = '/poster_detail';
   static const String menu = '/menu';
   static const String category = '/category';
-  static const String businessCategory = '/business_category';
-  static const String onlineServices = '/online_services';
+  static const String subCategory = '/sub_category';
   static const String template = '/template';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -52,10 +51,14 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const MenuScreen());
       case category:
         return MaterialPageRoute(builder: (_) => const CategoryScreen());
-      case businessCategory:
-        return MaterialPageRoute(builder: (_) => const BusinessCategoryPage());
-      case onlineServices:
-        return MaterialPageRoute(builder: (_) => const BusinessCategoryScreen());
+      case subCategory:
+        final categoryId = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<SubCategoryBloc>()..add(FetchSubCategories()),
+            child: SubCategoryScreen(categoryId: categoryId),
+          ),
+        );
       case template:
         final subCategoryName = settings.arguments as String;
         return MaterialPageRoute(
