@@ -35,7 +35,17 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
+    // Agar 401 nahi hai toh aage badhein
     if (err.response?.statusCode != 401) return handler.next(err);
+
+    final path = err.requestOptions.path;
+    final isAuthPath = path.contains(ApiEndpoints.sendOtp) || 
+                       path.contains(ApiEndpoints.verifyOtp) ||
+                       path.contains(ApiEndpoints.login);
+
+    // Agar Login ya OTP verify ke waqt 401 aaya hai, toh ye session expire nahi hai
+    // Ye sirf "Wrong OTP" ya "Invalid Credentials" hai.
+    if (isAuthPath) return handler.next(err);
 
     final requestOptions = err.requestOptions;
 
@@ -52,7 +62,10 @@ class AuthInterceptor extends Interceptor {
     _isRefreshing = true;
     try {
       final refreshToken = await storage.getRefreshToken();
-      if (refreshToken == null) throw Exception('No refresh token');
+      // Khali string ('') ko bhi handle karein
+      if (refreshToken == null || refreshToken.isEmpty) {
+        throw Exception('No refresh token available');
+      }
 
       final response = await Dio().post(
         '${ApiEndpoints.baseUrl}${ApiEndpoints.refreshToken}',
