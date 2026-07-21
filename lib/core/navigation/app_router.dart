@@ -7,6 +7,9 @@ import '../../features/posters/presentation/pages/poster_detail_screen.dart';
 import '../../features/menu/presentation/pages/category_screen.dart';
 import '../../features/menu/presentation/pages/menu_screen.dart';
 import '../../features/sub_category/presentation/pages/sub_category_screen.dart';
+import '../../features/child_category/presentation/pages/child_category_screen.dart';
+import '../../features/child_category/presentation/bloc/child_category_bloc.dart';
+import '../../features/child_category/presentation/bloc/child_category_event.dart';
 import '../../features/template/template_screen.dart';
 
 import '../../features/profile/presentation/pages/profile_page.dart';
@@ -25,6 +28,7 @@ class AppRoutes {
   static const String menu = '/menu';
   static const String category = '/category';
   static const String subCategory = '/sub_category';
+  static const String childCategory = '/child_category';
   static const String template = '/template';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -57,6 +61,14 @@ class AppRoutes {
           builder: (_) => BlocProvider(
             create: (context) => sl<SubCategoryBloc>()..add(FetchSubCategories()),
             child: SubCategoryScreen(categoryId: categoryId),
+          ),
+        );
+      case childCategory:
+        final subCategoryId = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<ChildCategoryBloc>()..add(FetchChildCategories()),
+            child: ChildCategoryScreen(subCategoryId: subCategoryId),
           ),
         );
       case template:

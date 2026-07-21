@@ -33,6 +33,11 @@ import '../../features/sub_category/data/repositories/sub_category_repository_im
 import '../../features/sub_category/domain/repositories/sub_category_repository.dart';
 import '../../features/sub_category/domain/usecases/get_sub_categories_usecase.dart';
 import '../../features/sub_category/presentation/bloc/sub_category_bloc.dart';
+import '../../features/child_category/data/datasources/child_category_remote_datasource.dart';
+import '../../features/child_category/data/repositories/child_category_repository_impl.dart';
+import '../../features/child_category/domain/repositories/child_category_repository.dart';
+import '../../features/child_category/domain/usecases/get_child_categories.dart';
+import '../../features/child_category/presentation/bloc/child_category_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -87,6 +92,13 @@ Future<void> initDependencies() async {
       () => SubCategoryRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()));
   sl.registerLazySingleton(() => GetSubCategoriesUseCase(sl()));
   sl.registerFactory(() => SubCategoryBloc(getSubCategoriesUseCase: sl()));
+
+  // Feature: Child-Category
+  sl.registerLazySingleton<ChildCategoryRemoteDataSource>(() => ChildCategoryRemoteDataSourceImpl(client: sl()));
+  sl.registerLazySingleton<ChildCategoryRepository>(
+      () => ChildCategoryRepositoryImpl(remoteDataSource: sl()));
+  sl.registerLazySingleton(() => GetChildCategories(sl()));
+  sl.registerFactory(() => ChildCategoryBloc(getChildCategories: sl()));
 
   // Har naya feature yaha apne datasource/repo/usecase/bloc register karega
 }

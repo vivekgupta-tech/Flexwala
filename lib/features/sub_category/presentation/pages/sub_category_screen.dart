@@ -142,8 +142,8 @@ class SubCategoryScreen extends StatelessWidget {
           onTap: () {
             Navigator.pushNamed(
               context, 
-              AppRoutes.template, 
-              arguments: sub.title
+              AppRoutes.childCategory, 
+              arguments: sub.id
             );
           },
         );

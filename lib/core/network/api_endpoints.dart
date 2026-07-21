@@ -11,4 +11,5 @@ class ApiEndpoints {
   static const String getProfile = 'admin/customers';
   static const String getCategories = 'admin/categories/all';
   static const String getSubCategories = 'admin/subcategories/all';
+  static const String getChildCategories = 'admin/childcategories/all';
 }
