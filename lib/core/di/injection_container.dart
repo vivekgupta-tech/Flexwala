@@ -23,6 +23,11 @@ import '../../features/profile/data/repositories/profile_repository_impl.dart';
 import '../../features/profile/domain/repositories/profile_repository.dart';
 import '../../features/profile/domain/usecases/get_profile_usecase.dart';
 import '../../features/profile/presentation/bloc/profile_bloc.dart';
+import '../../features/menu/data/datasources/category_remote_datasource.dart';
+import '../../features/menu/data/repositories/category_repository_impl.dart';
+import '../../features/menu/domain/repositories/category_repository.dart';
+import '../../features/menu/domain/usecases/get_categories_usecase.dart';
+import '../../features/menu/presentation/bloc/category_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -63,6 +68,13 @@ Future<void> initDependencies() async {
       () => ProfileRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()));
   sl.registerLazySingleton(() => GetProfileUseCase(sl()));
   sl.registerFactory(() => ProfileBloc(getProfileUseCase: sl()));
+
+  // Feature: Category
+  sl.registerLazySingleton<CategoryRemoteDataSource>(() => CategoryRemoteDataSourceImpl(client: sl()));
+  sl.registerLazySingleton<CategoryRepository>(
+      () => CategoryRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()));
+  sl.registerLazySingleton(() => GetCategoriesUseCase(sl()));
+  sl.registerFactory(() => CategoryBloc(getCategoriesUseCase: sl()));
 
   // Har naya feature yaha apne datasource/repo/usecase/bloc register karega
 }

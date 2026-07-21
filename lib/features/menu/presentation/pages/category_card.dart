@@ -6,6 +6,7 @@ class CategoryCardData {
   final IconData icon;
   final Color accentColor;
   final Color bgColor;
+  final String? imageUrl;
 
   const CategoryCardData({
     required this.title,
@@ -13,6 +14,7 @@ class CategoryCardData {
     required this.icon,
     required this.accentColor,
     required this.bgColor,
+    this.imageUrl,
   });
 }
 
@@ -53,7 +55,16 @@ class CategoryCard extends StatelessWidget {
                 color: data.bgColor,
                 shape: BoxShape.circle,
               ),
-              child: Icon(data.icon, color: data.accentColor, size: 22),
+              child: data.imageUrl != null && data.imageUrl!.isNotEmpty
+                  ? ClipOval(
+                      child: Image.network(
+                        data.imageUrl!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Icon(data.icon, color: data.accentColor, size: 22),
+                      ),
+                    )
+                  : Icon(data.icon, color: data.accentColor, size: 22),
             ),
             const SizedBox(height: 8),
             Text(

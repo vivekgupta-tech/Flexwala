@@ -1,193 +1,202 @@
 import 'package:flutter/material.dart';
-
-import '../../../../core/navigation/app_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/navigation/app_bottom_nav.dart';
+import '../../../../core/navigation/app_router.dart';
+import '../../../../core/di/injection_container.dart';
+import '../bloc/category_bloc.dart';
 import 'category_card.dart';
-
 import '../widgets/app_drawer.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({super.key});
 
-  static const List<CategoryCardData> _categories = [
-    CategoryCardData(
-      title: 'Business',
-      subtitle: 'Promote your\nbusiness & services',
-      icon: Icons.work_outline_rounded,
-      accentColor: AppColors.businessOrange,
-      bgColor: Color(0xFFFFEDD5),
-    ),
-    CategoryCardData(
-      title: 'Online Services',
-      subtitle: 'Digital services\nmade easy',
-      icon: Icons.language_rounded,
-      accentColor: AppColors.primaryPurple,
-      bgColor: Color(0xFFEDE9FE),
-    ),
-    CategoryCardData(
-      title: 'Political',
-      subtitle: 'Connect with\nyour supporters',
-      icon: Icons.account_balance_rounded,
-      accentColor: AppColors.politicalBlue,
-      bgColor: Color(0xFFDBEAFE),
-    ),
-    CategoryCardData(
-      title: 'Personal',
-      subtitle: 'Build your personal\ndigital identity',
-      icon: Icons.person_rounded,
-      accentColor: AppColors.personalPurple,
-      bgColor: Color(0xFFF3E8FF),
-    ),
-    CategoryCardData(
-      title: 'Devotional',
-      subtitle: 'Share your faith\n& spirituality',
-      icon: Icons.temple_hindu_rounded,
-      accentColor: AppColors.devotionalRed,
-      bgColor: Color(0xFFFEE2E2),
-    ),
-    CategoryCardData(
-      title: 'Royal',
-      subtitle: 'Showcase your\nroyal identity',
-      icon: Icons.diamond_outlined,
-      accentColor: AppColors.royalYellow,
-      bgColor: Color(0xFFFEF3C7),
-    ),
-    CategoryCardData(
-      title: 'Festival',
-      subtitle: 'Celebrate festivals\n& special events',
-      icon: Icons.celebration_rounded,
-      accentColor: AppColors.festivalGreen,
-      bgColor: Color(0xFFDCFCE7),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.pageBg,
-      drawer: const AppDrawer(),
-      bottomNavigationBar: AppBottomNav(
-        currentIndex: 1,
-        onItemTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, AppRoutes.home);
-          } else if (index == 3) {
-            Navigator.pushReplacementNamed(context, AppRoutes.profile);
-          }
-        },
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          children: [
-            const SizedBox(height: 8),
-            _buildTopBar(),
-            const SizedBox(height: 20),
-            _buildHeroSection(),
-            const SizedBox(height: 28),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _categories.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 14,
-                crossAxisSpacing: 12,
-                childAspectRatio: 0.72,
-              ),
-              itemBuilder: (context, index) {
-                final category = _categories[index];
-                return CategoryCard(
-                  data: category,
-                  onTap: () {
-                    if (category.title == 'Business') {
-                      Navigator.pushNamed(context, '/business_category');
-                    } else if (category.title == 'Online Services') {
-                      Navigator.pushNamed(context, '/online_services');
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Coming Soon!'),
-                          duration: Duration(seconds: 1),
-                        ),
-                      );
-                    }
-                  },
-                );
-              },
-            ),
-            const SizedBox(height: 20),
-          ],
+    return BlocProvider(
+      create: (context) => sl<CategoryBloc>()..add(FetchCategories()),
+      child: Scaffold(
+        backgroundColor: AppColors.pageBg,
+        drawer: const AppDrawer(),
+        bottomNavigationBar: AppBottomNav(
+          currentIndex: 1,
+          onItemTap: (index) {
+            if (index == 0) {
+              Navigator.pushReplacementNamed(context, AppRoutes.home);
+            } else if (index == 3) {
+              Navigator.pushReplacementNamed(context, AppRoutes.profile);
+            }
+          },
+        ),
+        body: SafeArea(
+          child: BlocBuilder<CategoryBloc, CategoryState>(
+            builder: (context, state) {
+              return ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                children: [
+                  const SizedBox(height: 8),
+                  _buildTopBar(context),
+                  const SizedBox(height: 20),
+                  _buildHeroSection(),
+                  const SizedBox(height: 28),
+                  if (state is CategoryLoading)
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: CircularProgressIndicator(color: AppColors.primaryPurple),
+                      ),
+                    )
+                  else if (state is CategoryError)
+                    Center(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 50),
+                          Text('Error: ${state.message}'),
+                          ElevatedButton(
+                            onPressed: () => context.read<CategoryBloc>().add(FetchCategories()),
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    )
+                  else if (state is CategoryLoaded)
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: state.categories.length,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 14,
+                        crossAxisSpacing: 12,
+                        childAspectRatio: 0.72,
+                      ),
+                      itemBuilder: (context, index) {
+                        final category = state.categories[index];
+                        // Assigning colors dynamically based on index for variety
+                        final List<Color> accentColors = [
+                          AppColors.businessOrange,
+                          AppColors.primaryPurple,
+                          AppColors.politicalBlue,
+                          AppColors.personalPurple,
+                          AppColors.devotionalRed,
+                          AppColors.royalYellow,
+                          AppColors.festivalGreen,
+                        ];
+                        final List<Color> bgColors = [
+                          const Color(0xFFFFEDD5),
+                          const Color(0xFFEDE9FE),
+                          const Color(0xFFDBEAFE),
+                          const Color(0xFFF3E8FF),
+                          const Color(0xFFFEE2E2),
+                          const Color(0xFFFEF3C7),
+                          const Color(0xFFDCFCE7),
+                        ];
+                        final List<IconData> icons = [
+                          Icons.work_outline_rounded,
+                          Icons.language_rounded,
+                          Icons.account_balance_rounded,
+                          Icons.person_rounded,
+                          Icons.temple_hindu_rounded,
+                          Icons.diamond_outlined,
+                          Icons.celebration_rounded,
+                        ];
+
+                        final colorIndex = index % accentColors.length;
+
+                        return CategoryCard(
+                          data: CategoryCardData(
+                            title: category.title,
+                            subtitle: '${category.title}',
+                            icon: icons[index % icons.length],
+                            accentColor: accentColors[colorIndex],
+                            bgColor: bgColors[colorIndex],
+                            imageUrl: category.imageUrl,
+                          ),
+                          onTap: () {
+                            if (category.title.toLowerCase().contains('business')) {
+                               Navigator.pushNamed(context, AppRoutes.businessCategory);
+                            } else {
+                               Navigator.pushNamed(
+                                 context, 
+                                 AppRoutes.template, 
+                                 arguments: category.title
+                               );
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  const SizedBox(height: 20),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildTopBar() {
-    return Builder(
-      builder: (context) => Row(
-        children: [
-          IconButton(
-            icon:
-                const Icon(Icons.menu_rounded, size: 24, color: AppColors.textDark),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.change_history_rounded,
-                    color: AppColors.politicalBlue, size: 20),
-                const SizedBox(width: 4),
-                Flexible(
-                  child: RichText(
-                    text: const TextSpan(
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 0.5),
-                      children: [
-                        TextSpan(
-                            text: 'FLEX',
-                            style: TextStyle(color: AppColors.textDark)),
-                        TextSpan(
-                            text: 'WALA',
-                            style: TextStyle(color: AppColors.businessOrange)),
-                      ],
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Stack(
-            clipBehavior: Clip.none,
+  Widget _buildTopBar(BuildContext context) {
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(Icons.menu_rounded, size: 24, color: AppColors.textDark),
+          onPressed: () => Scaffold.of(context).openDrawer(),
+        ),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.notifications_none_rounded,
-                  size: 24, color: AppColors.textDark),
-              Positioned(
-                top: -4,
-                right: -4,
-                child: Container(
-                  padding: const EdgeInsets.all(3),
-                  decoration: const BoxDecoration(
-                    color: AppColors.businessOrange,
-                    shape: BoxShape.circle,
+              const Icon(Icons.change_history_rounded,
+                  color: AppColors.politicalBlue, size: 20),
+              const SizedBox(width: 4),
+              Flexible(
+                child: RichText(
+                  text: const TextSpan(
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.5),
+                    children: [
+                      TextSpan(
+                          text: 'FLEX',
+                          style: TextStyle(color: AppColors.textDark)),
+                      TextSpan(
+                          text: 'WALA',
+                          style: TextStyle(color: AppColors.businessOrange)),
+                    ],
                   ),
-                  child: const Text('3',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 9,
-                          fontWeight: FontWeight.bold)),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
           ),
-        ],
-      ),
+        ),
+        Stack(
+          clipBehavior: Clip.none,
+          children: [
+            const Icon(Icons.notifications_none_rounded,
+                size: 24, color: AppColors.textDark),
+            Positioned(
+              top: -4,
+              right: -4,
+              child: Container(
+                padding: const EdgeInsets.all(3),
+                decoration: const BoxDecoration(
+                  color: AppColors.businessOrange,
+                  shape: BoxShape.circle,
+                ),
+                child: const Text('3',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold)),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -255,4 +264,3 @@ class CategoryScreen extends StatelessWidget {
     );
   }
 }
-
