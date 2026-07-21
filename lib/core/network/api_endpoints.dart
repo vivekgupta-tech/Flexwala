@@ -12,4 +12,6 @@ class ApiEndpoints {
   static const String getCategories = 'admin/categories/all';
   static const String getSubCategories = 'admin/subcategories/all';
   static const String getChildCategories = 'admin/childcategories/all';
+  static const String getBannerDetails = 'admin/banner-details';
+  static const String getPosters = 'admin/posters/all';
 }

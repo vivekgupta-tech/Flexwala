@@ -38,6 +38,16 @@ import '../../features/child_category/data/repositories/child_category_repositor
 import '../../features/child_category/domain/repositories/child_category_repository.dart';
 import '../../features/child_category/domain/usecases/get_child_categories.dart';
 import '../../features/child_category/presentation/bloc/child_category_bloc.dart';
+import '../../features/posters/data/datasources/poster_remote_datasource.dart';
+import '../../features/posters/data/repositories/poster_repository_impl.dart';
+import '../../features/posters/domain/repositories/poster_repository.dart';
+import '../../features/posters/domain/usecases/get_posters.dart';
+import '../../features/posters/presentation/bloc/poster_bloc.dart';
+import '../../features/banners/data/datasources/banner_remote_datasource.dart';
+import '../../features/banners/data/repositories/banner_repository_impl.dart';
+import '../../features/banners/domain/repositories/banner_repository.dart';
+import '../../features/banners/domain/usecases/get_banner_details.dart';
+import '../../features/banners/presentation/bloc/banner_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -99,6 +109,20 @@ Future<void> initDependencies() async {
       () => ChildCategoryRepositoryImpl(remoteDataSource: sl()));
   sl.registerLazySingleton(() => GetChildCategories(sl()));
   sl.registerFactory(() => ChildCategoryBloc(getChildCategories: sl()));
+
+  // Feature: Posters
+  sl.registerLazySingleton<PosterRemoteDataSource>(() => PosterRemoteDataSourceImpl(client: sl()));
+  sl.registerLazySingleton<PosterRepository>(
+      () => PosterRepositoryImpl(remoteDataSource: sl()));
+  sl.registerLazySingleton(() => GetPosters(sl()));
+  sl.registerFactory(() => PosterBloc(getPosters: sl()));
+
+  // Feature: Banners
+  sl.registerLazySingleton<BannerRemoteDataSource>(() => BannerRemoteDataSourceImpl(client: sl()));
+  sl.registerLazySingleton<BannerRepository>(
+      () => BannerRepositoryImpl(remoteDataSource: sl()));
+  sl.registerLazySingleton(() => GetBannerDetails(sl()));
+  sl.registerFactory(() => BannerBloc(getBannerDetails: sl()));
 
   // Har naya feature yaha apne datasource/repo/usecase/bloc register karega
 }

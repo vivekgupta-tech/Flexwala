@@ -10,6 +10,12 @@ import '../../features/sub_category/presentation/pages/sub_category_screen.dart'
 import '../../features/child_category/presentation/pages/child_category_screen.dart';
 import '../../features/child_category/presentation/bloc/child_category_bloc.dart';
 import '../../features/child_category/presentation/bloc/child_category_event.dart';
+import '../../features/posters/presentation/pages/posters_screen.dart';
+import '../../features/posters/presentation/bloc/poster_bloc.dart';
+import '../../features/posters/presentation/bloc/poster_event.dart';
+import '../../features/banners/presentation/pages/banners_screen.dart';
+import '../../features/banners/presentation/bloc/banner_bloc.dart';
+import '../../features/banners/presentation/bloc/banner_event.dart';
 import '../../features/template/template_screen.dart';
 
 import '../../features/profile/presentation/pages/profile_page.dart';
@@ -29,6 +35,8 @@ class AppRoutes {
   static const String category = '/category';
   static const String subCategory = '/sub_category';
   static const String childCategory = '/child_category';
+  static const String posters = '/posters';
+  static const String banners = '/banners';
   static const String template = '/template';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -69,6 +77,32 @@ class AppRoutes {
           builder: (_) => BlocProvider(
             create: (context) => sl<ChildCategoryBloc>()..add(FetchChildCategories()),
             child: ChildCategoryScreen(subCategoryId: subCategoryId),
+          ),
+        );
+      case posters:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<PosterBloc>()..add(FetchPosters()),
+            child: PostersScreen(
+              childCategoryId: args['id'] as String,
+              title: args['title'] as String,
+            ),
+          ),
+        );
+      case banners:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<BannerBloc>()..add(FetchBannerDetails(
+              categoryId: args['categoryId'] as String,
+              childId: args['childId'] as String,
+            )),
+            child: BannersScreen(
+              categoryId: args['categoryId'] as String,
+              childId: args['childId'] as String,
+              title: args['title'] as String,
+            ),
           ),
         );
       case template:

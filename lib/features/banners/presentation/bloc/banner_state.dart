@@ -1,0 +1,31 @@
+import 'package:equatable/equatable.dart';
+import '../../domain/entities/banner_entity.dart';
+
+abstract class BannerState extends Equatable {
+  const BannerState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class BannerInitial extends BannerState {}
+
+class BannerLoading extends BannerState {}
+
+class BannerLoaded extends BannerState {
+  final BannerEntity banner;
+
+  const BannerLoaded(this.banner);
+
+  @override
+  List<Object> get props => [banner];
+}
+
+class BannerError extends BannerState {
+  final String message;
+
+  const BannerError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}

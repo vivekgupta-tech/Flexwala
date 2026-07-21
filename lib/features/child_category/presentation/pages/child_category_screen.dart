@@ -95,10 +95,14 @@ class ChildCategoryScreen extends StatelessWidget {
                     imageUrl: item.imageUrl,
                   ),
                   onTap: () {
-                     Navigator.pushNamed(
+                    Navigator.pushNamed(
                       context,
-                      AppRoutes.template,
-                      arguments: item.title,
+                      AppRoutes.banners,
+                      arguments: {
+                        'categoryId': item.categoryId,
+                        'childId': item.id,
+                        'title': item.title,
+                      },
                     );
                   },
                 );
