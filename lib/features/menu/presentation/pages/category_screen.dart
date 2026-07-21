@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/navigation/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/navigation/app_bottom_nav.dart';
 import 'category_card.dart';
@@ -70,7 +71,9 @@ class CategoryScreen extends StatelessWidget {
         currentIndex: 1,
         onItemTap: (index) {
           if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/home');
+            Navigator.pushReplacementNamed(context, AppRoutes.home);
+          } else if (index == 3) {
+            Navigator.pushReplacementNamed(context, AppRoutes.profile);
           }
         },
       ),

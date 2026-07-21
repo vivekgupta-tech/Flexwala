@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../../core/navigation/app_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/navigation/app_bottom_nav.dart';
 import '../../home/presentation/widgets/premium_banner.dart';
@@ -101,10 +102,11 @@ class BusinessCategoryPage extends StatelessWidget {
       bottomNavigationBar: AppBottomNav(
         currentIndex: 1,
         onItemTap: (index) {
-          if (index == 0) Navigator.pushReplacementNamed(context, '/home');
-          if (index == 1) Navigator.pushReplacementNamed(context, '/category');
+          if (index == 0) Navigator.pushReplacementNamed(context, AppRoutes.home);
+          if (index == 1) return;
+          if (index == 3) Navigator.pushReplacementNamed(context, AppRoutes.profile);
         },
-        onCenterTap: () => Navigator.pushReplacementNamed(context, '/home'),
+        onCenterTap: () => Navigator.pushReplacementNamed(context, AppRoutes.home),
       ),
     );
   }

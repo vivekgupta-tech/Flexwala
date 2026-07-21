@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flexwala/core/navigation/app_router.dart';
 import 'package:flexwala/core/theme/app_colors.dart';
 import 'package:flexwala/core/widgets/navigation/app_bottom_nav.dart';
 import 'package:flexwala/features/menu/presentation/widgets/app_drawer.dart';
@@ -77,12 +78,14 @@ class BusinessCategoryScreen extends StatelessWidget {
       ),
       bottomNavigationBar: AppBottomNav(
         currentIndex: 1,
-        onCenterTap: () => Navigator.pushReplacementNamed(context, '/home'),
+        onCenterTap: () => Navigator.pushReplacementNamed(context, AppRoutes.home),
         onItemTap: (index) {
           if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/home');
+            Navigator.pushReplacementNamed(context, AppRoutes.home);
           } else if (index == 1) {
-            Navigator.pushNamed(context, '/category');
+            Navigator.pushReplacementNamed(context, AppRoutes.category);
+          } else if (index == 3) {
+            Navigator.pushReplacementNamed(context, AppRoutes.profile);
           }
         },
       ),
