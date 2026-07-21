@@ -77,7 +77,7 @@ class CategoryCard extends StatelessWidget {
                 color: Color(0xFF1A1A2E),
               ),
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             Text(
               data.subtitle,
               textAlign: TextAlign.center,

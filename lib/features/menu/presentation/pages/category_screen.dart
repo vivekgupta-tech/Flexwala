@@ -103,10 +103,13 @@ class CategoryScreen extends StatelessWidget {
 
                         final colorIndex = index % accentColors.length;
 
+                        // second word is removed
+                        final String displayTitle = category.title.split(' ').first;
+
                         return CategoryCard(
                           data: CategoryCardData(
-                            title: category.title,
-                            subtitle: '${category.title}',
+                            title: displayTitle,
+                            subtitle: category.title,
                             icon: icons[index % icons.length],
                             accentColor: accentColors[colorIndex],
                             bgColor: bgColors[colorIndex],
