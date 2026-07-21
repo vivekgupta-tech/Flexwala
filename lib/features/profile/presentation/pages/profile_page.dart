@@ -106,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: Text(
-                    'Account Settings',
+                    "",
                     textAlign: TextAlign.center,
                     style: AppTextStyles.pageTitle.copyWith(color: Colors.white),
                   ),
