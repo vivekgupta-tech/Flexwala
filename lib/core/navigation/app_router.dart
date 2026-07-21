@@ -10,11 +10,17 @@ import '../../features/menu/presentation/pages/business_category_screen.dart';
 import '../../features/business_category/presentation/business_category_page.dart';
 import '../../features/template/template_screen.dart';
 
+import '../../features/profile/presentation/pages/profile_page.dart';
+import '../../features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../di/injection_container.dart';
+
 class AppRoutes {
   static const String splash = '/';
   static const String login = '/login';
   static const String verifyOtp = '/verify-otp';
   static const String home = '/home';
+  static const String profile = '/profile';
   static const String posterDetail = '/poster_detail';
   static const String menu = '/menu';
   static const String category = '/category';
@@ -33,6 +39,13 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => VerifyOtpPage(mobile: mobile));
       case home:
         return MaterialPageRoute(builder: (_) => const HomePageOld());
+      case profile:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<ProfileBloc>(),
+            child: const ProfilePage(),
+          ),
+        );
       case posterDetail:
         return MaterialPageRoute(builder: (_) => const PosterDetailScreen());
       case menu:

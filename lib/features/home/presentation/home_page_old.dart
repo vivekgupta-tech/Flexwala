@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/navigation/app_router.dart';
 import '../../../core/theme/app_colors.dart';
 import 'package:flexwala/core/widgets/navigation/app_bottom_nav.dart';
 import '../data/home_mock_data.dart';
@@ -72,8 +73,11 @@ class HomePageOld extends StatelessWidget {
       bottomNavigationBar: AppBottomNav(
         currentIndex: 0,
         onItemTap: (index) {
+          if (index == 0) return;
           if (index == 1) {
-            Navigator.pushNamed(context, '/category');
+            Navigator.pushNamed(context, AppRoutes.category);
+          } else if (index == 3) {
+            Navigator.pushNamed(context, AppRoutes.profile);
           }
         },
       ),
