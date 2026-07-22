@@ -63,9 +63,11 @@ class LayerDeleted extends EditorEvent {
 
 class AddTextLayer extends EditorEvent {
   final String text;
-  const AddTextLayer(this.text);
+  final double dx;
+  final double dy;
+  const AddTextLayer(this.text, {this.dx = 100, this.dy = 200});
   @override
-  List<Object?> get props => [text];
+  List<Object?> get props => [text, dx, dy];
 }
 
 class TextStyleChanged extends EditorEvent {
@@ -74,6 +76,7 @@ class TextStyleChanged extends EditorEvent {
   final String? fontFamily;
   final double? fontSize;
   final FontWeight? fontWeight;
+  final FontStyle? fontStyle;
   final Color? color;
   final TextAlign? align;
   const TextStyleChanged({
@@ -82,20 +85,24 @@ class TextStyleChanged extends EditorEvent {
     this.fontFamily,
     this.fontSize,
     this.fontWeight,
+    this.fontStyle,
     this.color,
     this.align,
   });
   @override
-  List<Object?> get props => [id, text, fontFamily, fontSize, fontWeight, color, align];
+  List<Object?> get props => [id, text, fontFamily, fontSize, fontWeight, fontStyle, color, align];
 }
 
 // ---------------- Shapes ----------------
 
 class AddShapeLayer extends EditorEvent {
   final ShapeKind kind;
-  const AddShapeLayer(this.kind);
+  final double? dx;
+  final double? dy;
+  final String? imagePath;
+  const AddShapeLayer(this.kind, {this.dx, this.dy, this.imagePath});
   @override
-  List<Object?> get props => [kind];
+  List<Object?> get props => [kind, dx, dy, imagePath];
 }
 
 class ShapeStyleChanged extends EditorEvent {
@@ -171,4 +178,16 @@ class UndoRequested extends EditorEvent {
 
 class RedoRequested extends EditorEvent {
   const RedoRequested();
+}
+
+class SaveImageRequested extends EditorEvent {
+  const SaveImageRequested();
+}
+
+class BackgroundImageChanged extends EditorEvent {
+  final String path;
+  final bool isAsset;
+  const BackgroundImageChanged(this.path, {this.isAsset = false});
+  @override
+  List<Object?> get props => [path, isAsset];
 }

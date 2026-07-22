@@ -84,6 +84,7 @@ class _TransformableLayerState extends State<TransformableLayer> {
             fontFamily: layer.fontFamily,
             fontSize: layer.fontSize,
             fontWeight: layer.fontWeight,
+            fontStyle: layer.fontStyle,
             color: layer.color,
             letterSpacing: layer.letterSpacing,
           ),

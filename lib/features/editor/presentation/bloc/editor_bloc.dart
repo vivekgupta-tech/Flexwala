@@ -1,5 +1,11 @@
-import 'package:flutter/widgets.dart';
+import 'dart:io';
+import 'dart:ui' as ui;
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gal/gal.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../domain/entities/shape_layer.dart';
 import '../../domain/entities/stroke.dart';
 import '../../domain/entities/text_layer.dart';
@@ -35,6 +41,11 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
     on<StrokeEnded>(_onStrokeEnded);
     on<UndoRequested>(_onUndo);
     on<RedoRequested>(_onRedo);
+    on<SaveImageRequested>(_onSaveImage);
+    on<BackgroundImageChanged>((event, emit) => emit(state.copyWith(
+          backgroundUrl: event.path,
+          isAssetBackground: event.isAsset,
+        )));
   }
 
   String _newId() => 'layer_${_autoId++}_${DateTime.now().microsecondsSinceEpoch}';
@@ -92,7 +103,7 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
 
   void _onAddTextLayer(AddTextLayer event, Emitter<EditorState> emit) {
     _pushUndo(emit);
-    final layer = TextLayer(id: _newId(), text: event.text, dx: 100, dy: 200);
+    final layer = TextLayer(id: _newId(), text: event.text, dx: event.dx, dy: event.dy);
     emit(state.copyWith(layers: [...state.layers, layer], selectedLayerId: layer.id));
   }
 
@@ -104,6 +115,7 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
         fontFamily: event.fontFamily,
         fontSize: event.fontSize,
         fontWeight: event.fontWeight,
+        fontStyle: event.fontStyle,
         color: event.color,
         align: event.align,
       );
@@ -113,7 +125,14 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
 
   void _onAddShapeLayer(AddShapeLayer event, Emitter<EditorState> emit) {
     _pushUndo(emit);
-    final layer = ShapeLayer(id: _newId(), kind: event.kind, dx: 110, dy: 220);
+    final layer = ShapeLayer(
+      id: _newId(),
+      kind: event.kind,
+      dx: event.dx ?? 110,
+      dy: event.dy ?? 220,
+      imagePath: event.imagePath,
+      fillColor: event.imagePath != null ? Colors.transparent : Colors.blueAccent,
+    );
     emit(state.copyWith(layers: [...state.layers, layer], selectedLayerId: layer.id));
   }
 
@@ -171,5 +190,28 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
       redoStack: state.redoStack.sublist(0, state.redoStack.length - 1),
       undoStack: [...state.undoStack, state.layers],
     ));
+  }
+
+  Future<void> _onSaveImage(SaveImageRequested event, Emitter<EditorState> emit) async {
+    emit(state.copyWith(saveStatus: SaveStatus.saving));
+    try {
+      final boundary = state.canvasKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+      if (boundary == null) throw Exception('Canvas not found');
+
+      final image = await boundary.toImage(pixelRatio: 3.0); // HD Export
+      final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData == null) throw Exception('Failed to convert image');
+
+      final bytes = byteData.buffer.asUint8List();
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/export_${DateTime.now().millisecondsSinceEpoch}.png');
+      await file.writeAsBytes(bytes);
+
+      await Gal.putImage(file.path);
+      emit(state.copyWith(saveStatus: SaveStatus.success));
+    } catch (e) {
+      debugPrint('Save error: $e');
+      emit(state.copyWith(saveStatus: SaveStatus.error));
+    }
   }
 }

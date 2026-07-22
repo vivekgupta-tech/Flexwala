@@ -9,6 +9,7 @@ class ToolsBottomSheet extends StatelessWidget {
 
   static const _categories = [
     _ToolCategory('Text', Icons.text_fields_rounded),
+    _ToolCategory('Fonts', Icons.font_download_rounded),
     _ToolCategory('Draw', Icons.edit_outlined),
     _ToolCategory('Shapes', Icons.category_outlined),
     _ToolCategory('Elements', Icons.emoji_emotions_outlined),

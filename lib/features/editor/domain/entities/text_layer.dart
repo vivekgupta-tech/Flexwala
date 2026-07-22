@@ -6,6 +6,7 @@ class TextLayer extends Layer {
   final String fontFamily;
   final double fontSize;
   final FontWeight fontWeight;
+  final FontStyle fontStyle;
   final Color color;
   final double letterSpacing;
   final TextAlign align;
@@ -16,6 +17,7 @@ class TextLayer extends Layer {
     this.fontFamily = 'Roboto',
     this.fontSize = 22,
     this.fontWeight = FontWeight.w500,
+    this.fontStyle = FontStyle.normal,
     this.color = Colors.black,
     this.letterSpacing = 0,
     this.align = TextAlign.center,
@@ -33,6 +35,7 @@ class TextLayer extends Layer {
     String? fontFamily,
     double? fontSize,
     FontWeight? fontWeight,
+    FontStyle? fontStyle,
     Color? color,
     double? letterSpacing,
     TextAlign? align,
@@ -49,6 +52,7 @@ class TextLayer extends Layer {
       fontFamily: fontFamily ?? this.fontFamily,
       fontSize: fontSize ?? this.fontSize,
       fontWeight: fontWeight ?? this.fontWeight,
+      fontStyle: fontStyle ?? this.fontStyle,
       color: color ?? this.color,
       letterSpacing: letterSpacing ?? this.letterSpacing,
       align: align ?? this.align,
@@ -70,5 +74,5 @@ class TextLayer extends Layer {
   TextLayer withLock(bool locked) => copyWith(isLocked: locked);
 
   @override
-  List<Object?> get props => [...super.props, text, fontFamily, fontSize, color];
+  List<Object?> get props => [...super.props, text, fontFamily, fontSize, fontWeight, fontStyle, color];
 }

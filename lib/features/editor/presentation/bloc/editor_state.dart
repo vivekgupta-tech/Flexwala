@@ -6,6 +6,8 @@ import '../../domain/entities/template.dart';
 
 enum TemplatesStatus { initial, loading, loaded, error }
 
+enum SaveStatus { initial, saving, success, error }
+
 class EditorState extends Equatable {
   /// EditorCanvas isi key se RepaintBoundary banata hai — HD export
   /// isi boundary.toImage(pixelRatio: 4) se hoga.
@@ -18,6 +20,7 @@ class EditorState extends Equatable {
   final List<List<Layer>> redoStack;
   final TemplatesStatus templatesStatus;
   final List<EditorTemplate> templates;
+  final SaveStatus saveStatus;
 
   // Freehand drawing
   final List<Stroke> strokes;
@@ -43,6 +46,7 @@ class EditorState extends Equatable {
     this.activeDrawTool = DrawTool.pen,
     this.activeDrawColor = Colors.black,
     this.activeDrawWidth = 4,
+    this.saveStatus = SaveStatus.initial,
   });
 
   EditorState copyWith({
@@ -62,6 +66,7 @@ class EditorState extends Equatable {
     DrawTool? activeDrawTool,
     Color? activeDrawColor,
     double? activeDrawWidth,
+    SaveStatus? saveStatus,
   }) {
     return EditorState(
       canvasKey: canvasKey,
@@ -79,6 +84,7 @@ class EditorState extends Equatable {
       activeDrawTool: activeDrawTool ?? this.activeDrawTool,
       activeDrawColor: activeDrawColor ?? this.activeDrawColor,
       activeDrawWidth: activeDrawWidth ?? this.activeDrawWidth,
+      saveStatus: saveStatus ?? this.saveStatus,
     );
   }
 
@@ -98,5 +104,6 @@ class EditorState extends Equatable {
         activeDrawTool,
         activeDrawColor,
         activeDrawWidth,
+        saveStatus,
       ];
 }

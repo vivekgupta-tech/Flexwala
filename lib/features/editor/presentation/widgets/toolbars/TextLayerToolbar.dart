@@ -44,8 +44,37 @@ class TextLayerToolbar extends StatelessWidget {
           isActive: layer.fontWeight == FontWeight.bold,
           onTap: () => bloc.add(TextStyleChanged(
             id: layer.id,
-            fontWeight: layer.fontWeight == FontWeight.bold ? FontWeight.w500 : FontWeight.bold,
+            fontWeight: layer.fontWeight == FontWeight.bold ? FontWeight.normal : FontWeight.bold,
           )),
+        ),
+        ToolbarIcon(
+          icon: Icons.format_italic_rounded,
+          isActive: layer.fontStyle == FontStyle.italic,
+          onTap: () => bloc.add(TextStyleChanged(
+            id: layer.id,
+            fontStyle: layer.fontStyle == FontStyle.italic ? FontStyle.normal : FontStyle.italic,
+          )),
+        ),
+        ToolbarIcon(
+          icon: Icons.font_download_rounded,
+          onTap: () async {
+            final fonts = ['Roboto', 'Sans Serif', 'Monospace', 'Serif'];
+            final result = await showModalBottomSheet<String>(
+              context: context,
+              builder: (context) => Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: fonts.map((f) => ListTile(
+                    title: Text(f, style: TextStyle(fontFamily: f)),
+                    onTap: () => Navigator.pop(context, f),
+                    selected: layer.fontFamily == f,
+                  )).toList(),
+                ),
+              ),
+            );
+            if (result != null) bloc.add(TextStyleChanged(id: layer.id, fontFamily: result));
+          },
         ),
         GestureDetector(
           onTap: () async {
